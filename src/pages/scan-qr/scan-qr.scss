@@ -1,0 +1,10 @@
+page-scan-qr {
+  .qr-header {
+    position: relative;
+    background: url('../assets/img/qr-header.png') no-repeat transparent;
+    background-size: cover;
+    height: 30%;
+    z-index: 1;
+    background-repeat: repeat-x;
+  }
+}

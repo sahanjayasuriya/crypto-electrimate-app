@@ -1,0 +1,29 @@
+<ion-header>
+
+  <ion-navbar primary hideBackButton="true">
+    <button class="header-button" ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Settings</ion-title>
+    <ion-buttons end>
+      <button class="header-button" ion-button icon-only>
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item (click)="editProfileClicked()">
+      <ion-icon name="contact" item-start color="primary"></ion-icon>
+      Edit Profile
+    </ion-item>
+    <ion-item (click)="changePasswordClicked()">
+      <ion-icon name="key" item-start color="primary"></ion-icon>
+      Change Password
+    </ion-item>
+  </ion-list>
+</ion-content>

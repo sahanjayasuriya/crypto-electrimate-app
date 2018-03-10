@@ -57,3 +57,12 @@ typings/
 # dotenv environment variables file
 .env
 
+# Webstorm files
+*.iml
+.idea/
+
+# Ionic files
+platform/
+.sourcemaps/
+plugins/
+www/

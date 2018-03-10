@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar primary hideBackButton="true">
+    <button class="header-button" ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Modules</ion-title>
+    <ion-buttons end>
+      <button class="header-button" ion-button icon-only>
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item (click)="viewModule()">
+      <ion-avatar item-start>
+        <img src="assets/img/moduleIcon.png">
+      </ion-avatar>
+      <h2>Module 1</h2>
+      <p>3 of 8 sensors connected</p>
+    </ion-item>
+  </ion-list>
+</ion-content>

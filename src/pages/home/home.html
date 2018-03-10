@@ -1,0 +1,75 @@
+<ion-header>
+
+  <ion-navbar primary hideBackButton="true">
+    <button class="header-button" ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>ElectriMate</ion-title>
+    <ion-buttons end>
+      <button class="header-button" ion-button icon-only>
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-content padding>
+  <ion-grid>
+    <ion-row *ngIf="!showChart">
+      <ion-col col-12>
+        <h3 style="text-align: center">No sensors found</h3>
+        <button ion-button full color="danger" (click)="scanSensor()">
+          <ion-icon name="add"></ion-icon>
+          &nbsp;Add Sensors
+        </button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="showChart">
+      <h3 style="text-align: center">Usage Summary - Feb 2018</h3>
+      <canvas #doughnutCanvas></canvas>
+      <ion-card style="background-color: #185d62; color: #ffffff">
+        <ion-card-content>
+          <ion-row>
+            <ion-col col-4><b>Total Usage</b></ion-col>
+            <ion-col col-4><b>149 kWh</b></ion-col>
+            <ion-col col-4><b>Rs. 3011.50</b></ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card style="background-color: #FF6384">
+        <ion-card-content>
+          <ion-row>
+            <ion-col col-4>Deshani Vimukthika</ion-col>
+            <ion-col col-4>59.60 kWh</ion-col>
+            <ion-col col-4>Rs. 1144.25</ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+      <ion-card style="background-color: #36A2EB">
+        <ion-card-content>
+          <ion-row>
+            <ion-col col-4>Pamodya de Seram</ion-col>
+            <ion-col col-4>44.70 kWh</ion-col>
+            <ion-col col-4>Rs. 723.17</ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+      <ion-card style="background-color: #FFCE56">
+        <ion-card-content>
+          <ion-row>
+            <ion-col col-4>Mahela Abeysekara</ion-col>
+            <ion-col col-4>7.45 kWh</ion-col>
+            <ion-col col-4>Rs. 116.77</ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+
+      <button ion-button full color="primary" (click)="showHistory()">
+        <ion-icon name="clock"></ion-icon>
+        &nbsp;View History
+      </button>
+    </ion-row>
+  </ion-grid>
+</ion-content>

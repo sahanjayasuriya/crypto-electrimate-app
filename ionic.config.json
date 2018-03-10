@@ -1,0 +1,8 @@
+{
+  "name": "electrimate-app-V1.0.0",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

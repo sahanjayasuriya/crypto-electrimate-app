@@ -1,0 +1,41 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>User Profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-row>
+    <ion-col col-12 style="text-align: center;">
+      <div style="position: relative; display: inline-block; ">
+        <img id="user-pic" [src]=" user.photoURL == null? 'assets/img/no-user.png' : user.photoURL" width="200px">
+        <button ion-fab style="position: absolute; right: 10px; bottom: 10px;" (click)="presentActionSheet()">
+          <ion-icon name="camera"></ion-icon>
+        </button>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="text" [(ngModel)]="user.email" disabled></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Name</ion-label>
+      <ion-input type="text" [(ngModel)]="user.displayName"></ion-input>
+    </ion-item>
+    <ion-col col-9>
+      <ion-item>
+        <ion-label floating>Phone Number</ion-label>
+        <ion-input type="text" [(ngModel)]="user.phoneNumber"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-3 style="margin-top: 25px">
+      <button [disabled]="numberVerified" ion-button full color="secondary" (click)="verifyNumber()">Verify</button>
+    </ion-col>
+    <button ion-button full (click)="updateDetails()">Save Details</button>
+  </ion-row>
+</ion-content>
+<div id="re-container"></div>
