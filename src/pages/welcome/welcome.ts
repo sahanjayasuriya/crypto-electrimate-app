@@ -23,9 +23,16 @@ export class WelcomePage {
   doLogin() {
     this.angularFireAuth.auth.signInWithEmailAndPassword(this.user.email, this.user.password)
       .then((result) => {
-        console.log(result);
-        this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
-        this.navCtrl.setRoot(HomePage);
+        if(result.emailVerified){
+            console.log(result);
+            this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
+            this.navCtrl.setRoot(HomePage);
+            this.presentToast("Logged in successfully");
+        } else {
+          this.presentToast("Email not verified. Please verify the email to continue.");
+          this.angularFireAuth.auth.signOut();
+          this.navCtrl.setRoot(WelcomePage);
+        }
       }).catch((err) => {
       this.presentToast("Incorrect Credentials")
     })
@@ -37,7 +44,7 @@ export class WelcomePage {
 
   ionViewWillLoad() {
     this.angularFireAuth.authState.subscribe(data => {
-      if (data && data.uid) {
+      if (data && data.uid && data.emailVerified) {
         this.navCtrl.setRoot(HomePage);
         this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now())
       }

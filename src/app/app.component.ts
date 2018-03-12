@@ -20,7 +20,7 @@ export class MyApp {
 
   rootPage: any = WelcomePage;
   activePage: any;
-  currentUser: object;
+  currentUser: any;
   user: User = new User();
 
   pages: Array<{ title: string, component: any, icon: string }>;
@@ -45,6 +45,15 @@ export class MyApp {
       this.user.photoURL = user.photoURL;
       this.user.phoneNumber = user.phoneNumber;
       console.log(user);
+    });
+
+    events.subscribe('user:updated', (user, time) => {
+      this.currentUser = this.angularFireAuth.auth.currentUser;
+      this.user.email = this.currentUser.email;
+      this.user.displayName = this.currentUser.displayName;
+      this.user.photoURL = this.currentUser.photoURL;
+      this.user.phoneNumber = this.currentUser.phoneNumber;
+      console.log(this.currentUser);
     });
 
     this.pages = [

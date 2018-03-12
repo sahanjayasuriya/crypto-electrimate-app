@@ -44,8 +44,6 @@ import {UserProfilePage} from "../pages/user-profile/user-profile";
 import {Transfer} from "@ionic-native/transfer";
 import {FilePath} from "@ionic-native/file-path";
 import 'firebase/storage'
-import {VerifyOtpPageModule} from "../pages/verify-otp/verify-otp.module";
-import {VerifyOtpPage} from "../pages/verify-otp/verify-otp";
 import {PasswordResetPage} from "../pages/password-reset/password-reset";
 import {PasswordResetPageModule} from "../pages/password-reset/password-reset.module";
 import {PasswordChangePageModule} from "../pages/password-change/password-change.module";
@@ -96,7 +94,6 @@ export function provideSettings(storage: Storage) {
     UserDetailsPageModule,
     SettlePaymentPageModule,
     UserProfilePageModule,
-    VerifyOtpPageModule,
     PasswordResetPageModule,
     PasswordChangePageModule
   ],
@@ -116,7 +113,6 @@ export function provideSettings(storage: Storage) {
     UserDetailsPage,
     SettlePaymentPage,
     UserProfilePage,
-    VerifyOtpPage,
     PasswordResetPage,
     PasswordChangePage
   ],

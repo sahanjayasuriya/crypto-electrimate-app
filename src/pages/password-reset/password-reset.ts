@@ -45,6 +45,17 @@ export class PasswordResetPage {
         success.present();
       }).catch((err) => {
       console.log(err);
+        let error = this.alertCtrl.create({
+            title: 'No Account Found',
+            message: 'No Account was found for the email address you entered.',
+            buttons: [
+                {
+                    text: 'OK'
+                }
+            ],
+            cssClass: 'electrimateAlertCss'
+        });
+        error.present();
     })
   }
 

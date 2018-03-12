@@ -26,15 +26,10 @@
       <ion-label floating>Name</ion-label>
       <ion-input type="text" [(ngModel)]="user.displayName"></ion-input>
     </ion-item>
-    <ion-col col-9>
-      <ion-item>
-        <ion-label floating>Phone Number</ion-label>
-        <ion-input type="text" [(ngModel)]="user.phoneNumber"></ion-input>
-      </ion-item>
-    </ion-col>
-    <ion-col col-3 style="margin-top: 25px">
-      <button [disabled]="numberVerified" ion-button full color="secondary" (click)="verifyNumber()">Verify</button>
-    </ion-col>
+    <ion-item>
+      <ion-label floating>Phone Number</ion-label>
+      <ion-input type="text" [(ngModel)]="user.phoneNumber" disabled=""></ion-input>
+    </ion-item>
     <button ion-button full (click)="updateDetails()">Save Details</button>
   </ion-row>
 </ion-content>
