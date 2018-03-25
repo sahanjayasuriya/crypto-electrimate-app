@@ -10,72 +10,71 @@ import { Calendar } from '@ionic-native/calendar';
 })
 export class HomePage {
 
-  @ViewChild('doughnutCanvas') doughnutCanvas;
-  doughnutChart: any;
-  showChart: boolean = false;
-  user1: String = "Deshani Vimukthika";
+    @ViewChild('doughnutCanvas') doughnutCanvas;
+    doughnutChart: any;
+    showChart: boolean = false;
+    user1: String = "Deshani Vimukthika";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private calendar: Calendar) {
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    }
 
-  ngAfterViewInit() {
-    if (this.navParams.get('viewChart')) {
-      this.showChart = true;
-      setTimeout(() => {
-        this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
+    ngAfterViewInit() {
+        if (this.navParams.get('viewChart')) {
+            this.showChart = true;
+            setTimeout(() => {
+                this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
 
-          type: 'doughnut',
-          data: {
-            labels: ["user1", "Pamodya De Seram", "Mahela Jayawardane"],
-            datasets: [{
-              label: '# of Units',
-              data: [12, 19, 3],
-              backgroundColor: [
-                "#FF6384",
-                "#36A2EB",
-                "#FFCE56"
-              ],
-              hoverBackgroundColor: [
-                "#b43f66",
-                "#2b7ab4",
-                "#b5933d"
-              ]
-            }]
-          },
-          options: {
-            'responsive': true,
-            'maintainAspectRatio': true,
-            'transparencyEffects': true,
-            'dataSetBorderWidth': 2,
-            'legend': {
-              'display': false
-            }
-          }
+                    type: 'doughnut',
+                    data: {
+                        labels: ["user1", "Pamodya De Seram", "Mahela Jayawardane"],
+                        datasets: [{
+                            label: '# of Units',
+                            data: [12, 19, 3],
+                            backgroundColor: [
+                                "#FF6384",
+                                "#36A2EB",
+                                "#FFCE56"
+                            ],
+                            hoverBackgroundColor: [
+                                "#b43f66",
+                                "#2b7ab4",
+                                "#b5933d"
+                            ]
+                        }]
+                    },
+                    options: {
+                        'responsive': true,
+                        'maintainAspectRatio': true,
+                        'transparencyEffects': true,
+                        'dataSetBorderWidth': 2,
+                        'legend': {
+                            'display': false
+                        }
+                    }
 
-        });
-      }, 500);
+                });
+            }, 500);
+        }
+
+
     }
 
 
-  }
+// createCalendar() {
+//     this.calendar.createCalendar('MyCalendar').then(
+//         (msg) => {
+//             console.log(msg);
+//         },
+//         (err) => {
+//             console.log(err);
+//         }
+//     );
+//}
+    scanSensor() {
+        this.navCtrl.push(ScanQrPage);
+    }
 
+    showHistory() {
 
-
-createCalendar() {
-    this.calendar.createCalendar('MyCalendar').then(
-        (msg) => {
-            console.log(msg);
-        },
-        (err) => {
-            console.log(err);
-        }
-    );
-}
-  scanSensor() {
-    this.navCtrl.push(ScanQrPage);
-  }
-
-  showHistory() {
-
-  }
+    }
 }
