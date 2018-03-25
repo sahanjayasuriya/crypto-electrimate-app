@@ -2,7 +2,7 @@ import {ScanQrPage} from "../scan-qr/scan-qr";
 import {IonicPage, NavController, NavParams} from "ionic-angular";
 import {Component, ViewChild} from "@angular/core";
 import {Chart} from 'chart.js';
-
+import { Calendar } from '@ionic-native/calendar';
 @IonicPage()
 @Component({
   selector: 'page-home',
@@ -13,8 +13,9 @@ export class HomePage {
   @ViewChild('doughnutCanvas') doughnutCanvas;
   doughnutChart: any;
   showChart: boolean = false;
+  user1: String = "Deshani Vimukthika";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private calendar: Calendar) {
   }
 
   ngAfterViewInit() {
@@ -25,7 +26,7 @@ export class HomePage {
 
           type: 'doughnut',
           data: {
-            labels: ["Deshani Vimukthika", "Pamodya De Seram", "Mahela Jayawardane"],
+            labels: ["user1", "Pamodya De Seram", "Mahela Jayawardane"],
             datasets: [{
               label: '# of Units',
               data: [12, 19, 3],
@@ -58,6 +59,18 @@ export class HomePage {
 
   }
 
+
+
+createCalendar() {
+    this.calendar.createCalendar('MyCalendar').then(
+        (msg) => {
+            console.log(msg);
+        },
+        (err) => {
+            console.log(err);
+        }
+    );
+}
   scanSensor() {
     this.navCtrl.push(ScanQrPage);
   }
