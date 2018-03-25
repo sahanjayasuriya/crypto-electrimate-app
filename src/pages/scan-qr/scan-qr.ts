@@ -1,7 +1,11 @@
 import {BarcodeScanner} from "@ionic-native/barcode-scanner";
 import {Component} from "@angular/core";
-import {AlertController, IonicPage, NavController, NavParams} from "ionic-angular";
+import {AlertController, Events, IonicPage, NavController, NavParams, ToastController} from "ionic-angular";
 import {CreateUserPage} from "../create-user/create-user";
+import {AngularFireAuth} from "angularfire2/auth";
+import {AngularFireDatabase} from "angularfire2/database";
+import {FirebaseListObservable} from "angularfire2/database-deprecated";
+import {SensorsPageModule} from "../sensors/sensors.module";
 
 /**
  * Generated class for the ScanQrPage page.
@@ -12,58 +16,69 @@ import {CreateUserPage} from "../create-user/create-user";
 
 @IonicPage()
 @Component({
-  selector: 'page-scan-qr',
-  templateUrl: 'scan-qr.html',
+    selector: 'page-scan-qr',
+    templateUrl: 'scan-qr.html',
 })
 export class ScanQrPage {
 
-  scannedCode = null;
+    scannedCode = null;
+    sensorId: String;
 
-  sensorCodes: Array<string> = ['electrimate-sensor-0001', 'electrimate-sensor-0002', 'electrimate-sensor-0003'];
+    constructor(private angularFireDatabase: AngularFireDatabase,
+                public navCtrl: NavController,
+                public navParams: NavParams,
+                private barcodeScanner: BarcodeScanner,
+                public alertCtrl: AlertController) {
+    }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private barcodeScanner: BarcodeScanner, public alertCtrl: AlertController) {
-  }
 
-  scanCode() {
-    this.barcodeScanner.scan().then(barcodeData => {
-      if (this.sensorCodes.some(code => code === barcodeData.text)) {
-        this.showConfirm();
-      } else {
-        this.showError();
-      }
-    })
-  }
+    scanCode() {
+        this.barcodeScanner.scan().then(barcodeData => {
+            console.log(barcodeData);
+            this.sensorId = barcodeData.text;
+            this.angularFireDatabase.database.ref('/inventory/sensors/' + this.sensorId).once('value')
+                .then((data) => {
+                    if(null != data.val()){
+                        this.showConfirm();
+                    } else {
+                        this.showError();
+                    }
+                }, (error) => {
+                    this.showError();
+                });
+        })
+    }
 
-  showConfirm() {
-    let confirm = this.alertCtrl.create({
-      title: 'Sensor Identified',
-      message: 'Sensor identified successfully. Do you want to proceed with this sensor?',
-      buttons: [
-        {
-          text: 'No',
-          handler: () => {
-            console.log('No clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            console.log('Yes clicked');
-            this.navCtrl.push(CreateUserPage);
-          }
-        }
-      ],
-      cssClass: 'electrimateAlertCss'
-    });
-    confirm.present();
-  }
+    showConfirm() {
+        let confirm = this.alertCtrl.create({
+            title: 'Sensor Identified',
+            message: 'Sensor identified successfully. Do you want to proceed with this sensor?',
+            buttons: [
+                {
+                    text: 'No',
+                    handler: () => {
+                        console.log('No clicked');
+                    }
+                },
+                {
+                    text: 'Yes',
+                    handler: () => {
+                        console.log('Yes clicked');
+                        this.navCtrl.push(CreateUserPage,{'sensorId':this.sensorId});
+                    }
+                }
+            ],
+            cssClass: 'electrimateAlertCss'
+        });
+        confirm.present();
+    }
 
-  showError() {
-    let alert = this.alertCtrl.create({
-      title: 'Identification Failed',
-      subTitle: 'Sorry, we couldn\'t identify the sensor. Please try again or contact support',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
+    showError() {
+        let alert = this.alertCtrl.create({
+            title: 'Identification Failed',
+            subTitle: 'Sorry, we couldn\'t identify the sensor. Please try again or contact support',
+            buttons: ['OK']
+        });
+        alert.present();
+    }
 }

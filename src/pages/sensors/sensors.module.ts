@@ -11,4 +11,6 @@ import {SensorsPage} from './sensors';
   ],
 })
 export class SensorsPageModule {
+  $key: String;
+  title: String;
 }

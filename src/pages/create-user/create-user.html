@@ -17,19 +17,19 @@
   <ion-list>
 
     <ion-item>
-      <ion-label>Sensor Id</ion-label>
-      <ion-input type="text" [disabled]="true" value="electrimate-sensor-0001"></ion-input>
+      <ion-label>Sensor Id : </ion-label>
+      <ion-input type="text" [disabled]="true" value="{{sensorId}}"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Select Module</ion-label>
+      <ion-label>Select Module : </ion-label>
       <ion-select [(ngModel)]="module">
         <ion-option value="1">Module 1</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label>Select Line</ion-label>
+      <ion-label>Select Line : </ion-label>
       <ion-select [(ngModel)]="line">
         <ion-option value="1">Line 1</ion-option>
         <ion-option value="2">Line 2</ion-option>
@@ -37,7 +37,7 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Select User</ion-label>
+      <ion-label>Select User : </ion-label>
       <ion-select [(ngModel)]="user">
         <ion-option value="1">Deshani Vimukthika</ion-option>
         <ion-option value="2">Pamodya de Seram</ion-option>

@@ -16,11 +16,14 @@ import {HomePage} from "../home/home";
 })
 export class CreateUserPage {
 
+  sensorId: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CreateUserPage');
+    this.sensorId = this.navParams.get("sensorId");
   }
 
   showHome() {
