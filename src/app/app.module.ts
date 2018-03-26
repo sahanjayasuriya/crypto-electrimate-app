@@ -10,6 +10,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
+
 import {MyApp} from './app.component';
 import {HomePage} from "../pages/home/home";
 import {WelcomePage} from "../pages/welcome/welcome";

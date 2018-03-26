@@ -15,7 +15,7 @@
 </ion-header>
 <ion-content padding>
   <ion-grid>
-    <ion-row *ngIf="!showChart">
+    <ion-row>
       <ion-col col-12>
         <h3 style="text-align: center">No sensors found</h3>
         <button ion-button full color="danger" (click)="scanSensor()">
@@ -24,6 +24,23 @@
         </button>
       </ion-col>
     </ion-row>
+
+      <ion-row>
+          <ion-col col-4>
+              <b>Start Date</b>
+            <ion-datetime displayFormat="MMM DD, YYYY h:mm A"  [(ngModel)]="startDate"></ion-datetime>
+          </ion-col>
+        <ion-col col-4>
+          <b>Due Date</b>
+          <ion-datetime displayFormat="MMM DD, YYYY h:mm A" [(ngModel)]="dueDate"></ion-datetime>
+        </ion-col>
+        <ion-col col-12>
+          <button ion-button full color="danger" (click)="checkUsage(startDate,dueDate)">
+            <ion-icon name="albums" md="md-albums"></ion-icon>
+            &nbsp;Check Usage
+          </button>
+        </ion-col>
+      </ion-row>
 
     <ion-row *ngIf="showChart">
       <h3 style="text-align: center">Usage Summary - Feb 2018</h3>
