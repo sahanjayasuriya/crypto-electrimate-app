@@ -17,12 +17,12 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item (click)="viewModule()">
+    <ion-item *ngFor="let module of moduleList" (click)="viewModule(module.id)">
       <ion-avatar item-start>
         <img src="assets/img/moduleIcon.png">
       </ion-avatar>
-      <h2>Module 1</h2>
-      <p>3 of 8 sensors connected</p>
+        <h2>{{module.name}}</h2>
+      <p>Tap to view more info</p>
     </ion-item>
   </ion-list>
 </ion-content>
