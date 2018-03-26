@@ -5,9 +5,8 @@ import {Camera} from '@ionic-native/camera';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {File} from '@ionic-native/file';
 import {StatusBar} from '@ionic-native/status-bar';
-import {IonicStorageModule, Storage} from '@ionic/storage';
+import {IonicStorageModule} from '@ionic/storage';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
 
@@ -50,20 +49,10 @@ import {PasswordResetPageModule} from "../pages/password-reset/password-reset.mo
 import {PasswordChangePageModule} from "../pages/password-change/password-change.module";
 import {PasswordChangePage} from "../pages/password-change/password-change";
 import {AngularFireDatabase} from "angularfire2/database";
-// The translate loader needs to know where to load i18n files
-// in Ionic's static asset pipeline.
-export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
-
-export function provideSettings(storage: Storage) {
-    /**
-     * The Settings provider takes a set of default settings for your app.
-     *
-     * You can add new settings options at any time. Once the settings are saved,
-     * these values will not overwrite the saved values (this can be done manually if desired).
-     */
-}
+import {EulaPageModule} from "../pages/eula/eula.module";
+import {EulaPage} from "../pages/eula/eula";
+import {EulaAgreementPageModule} from "../pages/eula-agreement/eula-agreement.module";
+import {EulaAgreementPage} from "../pages/eula-agreement/eula-agreement";
 
 @NgModule({
     declarations: [
@@ -72,13 +61,6 @@ export function provideSettings(storage: Storage) {
     imports: [
         BrowserModule,
         HttpClientModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: (createTranslateLoader),
-                deps: [HttpClient]
-            }
-        }),
         IonicModule.forRoot(MyApp),
         IonicStorageModule.forRoot(),
         AngularFireModule.initializeApp(FIREBASE_CONFIG),
@@ -97,7 +79,9 @@ export function provideSettings(storage: Storage) {
         SettlePaymentPageModule,
         UserProfilePageModule,
         PasswordResetPageModule,
-        PasswordChangePageModule
+        PasswordChangePageModule,
+        EulaPageModule,
+        EulaAgreementPageModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -116,7 +100,9 @@ export function provideSettings(storage: Storage) {
         SettlePaymentPage,
         UserProfilePage,
         PasswordResetPage,
-        PasswordChangePage
+        PasswordChangePage,
+        EulaPage,
+        EulaAgreementPage
     ],
     providers: [
         Camera,
@@ -128,7 +114,8 @@ export function provideSettings(storage: Storage) {
         FilePath,
         AngularFireDatabase,
         // Keep this to enable Ionic's runtime error handling during development
-        {provide: ErrorHandler, useClass: IonicErrorHandler}
+        {provide: ErrorHandler, useClass: IonicErrorHandler},
+        Storage
     ]
 })
 export class AppModule {

@@ -10,6 +10,7 @@ import {ModulesPage} from "../pages/modules/modules";
 import {SettingsPage} from "../pages/settings/settings";
 import {User} from "../model/user";
 import {AngularFireAuth} from "angularfire2/auth";
+import {EulaPage} from "../pages/eula/eula";
 
 @Component({
   templateUrl: 'app.html'
@@ -18,7 +19,7 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = WelcomePage;
+  rootPage: any = EulaPage;
   activePage: any;
   currentUser: any;
   user: User = new User();
