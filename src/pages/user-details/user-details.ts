@@ -2,13 +2,6 @@ import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {SettlePaymentPage} from "../settle-payment/settle-payment";
 
-/**
- * Generated class for the UserDetailsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-user-details',
