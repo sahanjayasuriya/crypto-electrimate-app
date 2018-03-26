@@ -1,0 +1,34 @@
+<ion-slides [pager]="true" class="swipe-intro">
+    <ion-slide style="background-color: #185d62; color: white">
+        <img src="assets/img/appicon.png" style="height: 16rem">
+        <h1>Welcome to Electrimate!</h1>
+        <h5>The Smart Electricity Meter</h5>
+        <p style="padding-top: 5rem">Slide right to get started.</p>
+    </ion-slide>
+    <ion-slide style="background-color: #E91E63; color: white">
+        <h1>What is Electrimate?</h1>
+        <p style="padding: 0rem 3rem 0rem 4rem">Electrimate is a smart electricity meter that allows you to monitor
+            energy usage in different sections of your apartment and view the current electricity bill amount</p>
+    </ion-slide>
+    <ion-slide style="background-color: #03A9F4; color: white">
+        <h1>Before you continue</h1>
+        <ul style="text-align: left; padding: 0rem 3rem 0rem 5rem">
+            <li>Make sure the module is correctly installed</li>
+            <li>Make sure the sensors are connected</li>
+            <li>For any assistance contact our help desk</li>
+        </ul>
+    </ion-slide>
+    <ion-slide style="background-color: #FF5722; color: white">
+        <h3 style="padding: 0rem 2rem 0rem 2rem">Please Read and Accept the End User License Agreement to Continue</h3>
+        <div class="intro-slider-checkbox">
+            <br/>
+            <button ion-button color="white" outline large (click)="showEula()">Read Agreement</button>
+
+            <div style="padding-top: 50px">
+                <button ion-button color="secondary" round (click)="complete()">I Accept the Agreement</button>
+                <br/>
+                <button ion-button color="danger" round (click)="exit()">I Do Not Accept the Agreement</button>
+            </div>
+        </div>
+    </ion-slide>
+</ion-slides>
