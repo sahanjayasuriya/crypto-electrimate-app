@@ -20,8 +20,6 @@ import {SensorsPageModule} from "../sensors/sensors.module";
     templateUrl: 'scan-qr.html',
 })
 export class ScanQrPage {
-
-    scannedCode = null;
     sensorId: String;
 
     constructor(private angularFireDatabase: AngularFireDatabase,
@@ -36,7 +34,7 @@ export class ScanQrPage {
         this.barcodeScanner.scan().then(barcodeData => {
             console.log(barcodeData);
             this.sensorId = barcodeData.text;
-            this.angularFireDatabase.database.ref('/inventory/sensors/' + this.sensorId).once('value')
+            this.angularFireDatabase.database.ref('/sensors/' + this.sensorId).once('value')
                 .then((data) => {
                     if(null != data.val()){
                         this.showConfirm();
