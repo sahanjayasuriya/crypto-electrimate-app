@@ -50,7 +50,6 @@ export class WelcomePage {
             if (data && data.uid && data.emailVerified) {
                 this.navCtrl.setRoot(HomePage);
                 this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now())
-                this.loading.dismiss();
             }
             this.loading.dismiss();
         })
