@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {AngularFireAuth} from "angularfire2/auth";
 import {AngularFireDatabase} from "angularfire2/database";
+import {CreateUserPage} from "../create-user/create-user";
+import {ModuleInfoPage} from "../module-info/module-info";
 
 /**
  * Generated class for the ModulesPage page.
@@ -52,7 +54,7 @@ export class ModulesPage {
     }
 
     viewModule(moduleId: string) {
-        // this.navCtrl.push(ModuleInfoPage);
+        this.navCtrl.push(ModuleInfoPage,{'moduleId':this.moduleId});
         console.log(moduleId);
     }
 

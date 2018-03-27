@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {SensorsPage} from "../sensors/sensors";
+import {AngularFireAuth} from "angularfire2/auth";
+import {AngularFireDatabase} from "angularfire2/database";
 
 /**
  * Generated class for the ModuleInfoPage page.
@@ -16,15 +18,42 @@ import {SensorsPage} from "../sensors/sensors";
 })
 export class ModuleInfoPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  moduleId: string;
+  moduleName:string;
+  sensors:Array<string>;
+  noOfSensors:any;
+  sensorList: Array<{ id: string, name: string }> = [];
+
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private angularFireAuth: AngularFireAuth,
+              private angularFireDatabase: AngularFireDatabase,
+              private toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ModuleInfoPage');
+    this.moduleId = this.navParams.get("moduleId");
+      this.angularFireDatabase.database.ref('/modules/' + this.moduleId).once('value')
+          .then((data) => {
+              if(null != data.val()){
+                this.sensors = data.val().sensors;
+                this.moduleName = data.val().moduleName;
+                this.noOfSensors = data.val().sensors.length;
+                  for (let sensor of this.sensors) {
+                      this.sensorList.push({id: this.moduleId, name: sensor});
+                  }
+                console.log(this.noOfSensors);
+              } else {
+              }
+          }, (error) => {
+          });
+
   }
 
   viewSensors() {
     this.navCtrl.push(SensorsPage);
+      this.navCtrl.push(SensorsPage,{'sensorList':this.sensorList});
   }
 
 }

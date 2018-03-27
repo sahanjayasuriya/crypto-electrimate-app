@@ -9,38 +9,13 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item>
+    <ion-item *ngFor="let sensor of sensorList">
       <ion-avatar item-start>
         <img src="assets/img/sensorIcon.png">
       </ion-avatar>
-      <h2>Sensor 1</h2>
+      <h2>{{sensor.name}}</h2>
       <h3>Assigned to Deshani Vimukthika</h3>
       <p style="color: #18a64f">Working</p>
     </ion-item>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/img/sensorIcon.png">
-      </ion-avatar>
-      <h2>Sensor 2</h2>
-      <h3>Assigned to Pamodya de Seram</h3>
-      <p style="color: #dc3545">No Signal (Contact support)</p>
-    </ion-item>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/img/sensorIcon.png">
-      </ion-avatar>
-      <h2>Sensor 3</h2>
-      <h3>Assigned to Mahela Abeysekara</h3>
-      <p style="color: #18a64f">Working</p>
-    </ion-item>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/img/sensorIcon.png">
-      </ion-avatar>
-      <h2>Sensor 4</h2>
-      <h3>Assigned to Dasun Abeywickrama</h3>
-      <p style="color: #FFC107">Disabled</p>
-    </ion-item>
-
   </ion-list>
 </ion-content>
