@@ -4,6 +4,7 @@ import {AngularFireAuth} from "angularfire2/auth";
 import {User} from "../../model/user";
 import {HomePage} from "../home/home";
 import {PasswordResetPage} from "../password-reset/password-reset";
+import {AngularFireDatabase} from "angularfire2/database";
 
 @IonicPage()
 @Component({
@@ -19,22 +20,37 @@ export class WelcomePage {
                 public navCtrl: NavController,
                 public toastCtrl: ToastController,
                 public events: Events,
-                public loadingCtrl: LoadingController) {
+                public loadingCtrl: LoadingController,
+                private angularFireDatabase: AngularFireDatabase) {
     }
 
     doLogin() {
+        this.presentLoading();
         this.angularFireAuth.auth.signInWithEmailAndPassword(this.user.email, this.user.password)
             .then((result) => {
-                if (result.emailVerified) {
-                    console.log(result);
-                    this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
-                    this.navCtrl.setRoot(HomePage);
-                    this.presentToast("Logged in successfully");
-                } else {
-                    this.presentToast("Email not verified. Please verify the email to continue.");
-                    this.angularFireAuth.auth.signOut();
-                    this.navCtrl.setRoot(WelcomePage);
-                }
+                this.angularFireDatabase.database.ref('users/' + result.uid).once('value')
+                    .then((data) => {
+                        if(data.val().userType == 'HOUSE-OWNER'){
+                            if (result.emailVerified) {
+                                this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
+                                this.navCtrl.setRoot(HomePage);
+                                this.presentToast("Logged in successfully");
+                            } else {
+                                this.presentToast("Email not verified. Please verify the email to continue.");
+                                this.angularFireAuth.auth.signOut();
+                                this.navCtrl.setRoot(WelcomePage);
+                            }
+                        } else {
+                            this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
+                            this.navCtrl.setRoot(HomePage);
+                            this.presentToast("Logged in successfully");
+                        }
+                        this.loading.dismiss();
+                    }).catch((err) => {
+                    console.log(err);
+                    this.loading.dismiss();
+                });
+
             }).catch((err) => {
             this.presentToast("Incorrect Credentials")
         })
@@ -66,7 +82,7 @@ export class WelcomePage {
 
     presentLoading() {
         this.loading = this.loadingCtrl.create({
-            content: 'Loading...'
+            content: 'Logging in...'
         });
         this.loading.present();
     }

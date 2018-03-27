@@ -58,13 +58,17 @@ export class CreateUserPage implements OnInit{
 
     saveUser() {
         var sensors = [];
+        let date: any = new Date();
         this.angularFireAuth.auth.createUserWithEmailAndPassword(this.user.email, this.defaultPassword)
             .then((data) => {
+                console.log(data);
                 this.angularFireDatabase.database.ref('users/' + data.uid).set({
                     email: data.email,
+                    displayName: data.displayName,
                     userType: 'ELECTRICITY_USER',
                     firstLogin: true,
-                    sensorId: this.user.sensorId
+                    sensorId: this.user.sensorId,
+                    created: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
                 }).then((userData) => {
                     this.angularFireDatabase.database.ref('sensors/' + this.user.sensorId).update({
                         pin: this.user.connectedPin

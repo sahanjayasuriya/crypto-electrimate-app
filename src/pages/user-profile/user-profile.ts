@@ -1,7 +1,7 @@
 import {AngularFireAuth} from "angularfire2/auth";
 import {
     ActionSheetController, Events,
-    IonicPage,
+    IonicPage, LoadingController,
     ModalController,
     NavController,
     NavParams,
@@ -13,6 +13,7 @@ import {FirebaseApp} from 'angularfire2';
 import {User} from "../../model/user";
 import * as firebase from "firebase/app";
 import AuthCredential = firebase.auth.AuthCredential;
+import {AngularFireDatabase} from "angularfire2/database";
 
 /**
  * Generated class for the UserProfilePage page.
@@ -29,6 +30,7 @@ import AuthCredential = firebase.auth.AuthCredential;
 export class UserProfilePage {
     user: User = new User();
     credential: AuthCredential;
+    loading: any;
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
@@ -37,15 +39,28 @@ export class UserProfilePage {
                 private angularFireAuth: AngularFireAuth,
                 private toastCtrl: ToastController,
                 private firebaseApp: FirebaseApp,
-                public events: Events) {
+                public events: Events,
+                private angularFireDatabase: AngularFireDatabase,
+                public loadingCtrl: LoadingController) {
     }
 
     ionViewWillLoad() {
         const currentUser = this.angularFireAuth.auth.currentUser;
+        this.angularFireDatabase.database.ref('users/' + currentUser.uid).once('value')
+            .then((data) => {
+                if(data.val().userType == 'HOUSE-OWNER'){
+                    this.user.phoneNumber = currentUser.phoneNumber;
+                } else {
+                    this.user.phoneNumber = data.val().phoneNumber;
+                }
+            }).catch((err) => {
+            console.log(err);
+        });
+
         this.user.email = currentUser.email;
         this.user.displayName = currentUser.displayName;
-        this.user.phoneNumber = currentUser.phoneNumber;
         this.user.photoURL = currentUser.photoURL;
+
     }
 
     public presentActionSheet() {
@@ -89,17 +104,18 @@ export class UserProfilePage {
             saveToPhotoAlbum: true,
             correctOrientation: true
         };
-
+        this.presentLoading();
         this.camera.getPicture(options)
             .then((profileImage) => {
                 const profilePic = this.firebaseApp.storage().ref('profileImages/' + this.angularFireAuth.auth.currentUser.uid + '.png');
                 profilePic.putString(profileImage, 'base64', {contentType: 'image/png'})
                     .then((savedImage) => {
-                        debugger;
+                        this.loading.dismiss();
                         this.presentToast("Photo Successfully Updated");
                         this.user.photoURL = savedImage.downloadURL;
                     });
             }, (err) => {
+                this.loading.dismiss();
                 this.presentToast("Error uploading photo");
             });
     }
@@ -111,6 +127,11 @@ export class UserProfilePage {
                 photoURL: this.user.photoURL
             }
         ).then((data) => {
+            this.angularFireDatabase.database.ref('users/' + this.angularFireAuth.auth.currentUser.uid).update({
+                displayName: this.user.displayName,
+                photoURL: this.user.photoURL,
+                phoneNumber: this.user.phoneNumber
+            });
             this.presentToast("User details updated successfully");
             this.events.publish('user:updated', this.angularFireAuth.auth.currentUser, Date.now())
         }).catch((err) => {
@@ -126,6 +147,13 @@ export class UserProfilePage {
             position: 'bottom'
         });
         toast.present();
+    }
+
+    presentLoading() {
+        this.loading = this.loadingCtrl.create({
+            content: 'Uploading...'
+        });
+        this.loading.present();
     }
 
 }

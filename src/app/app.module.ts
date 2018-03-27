@@ -25,11 +25,9 @@ import {UsersPage} from "../pages/users/users";
 import {ModulesPageModule} from "../pages/modules/modules.module";
 import {SensorsPageModule} from "../pages/sensors/sensors.module";
 import {SettingsPageModule} from "../pages/settings/settings.module";
-import {AddUserPageModule} from "../pages/add-user/add-user.module";
 import {ModulesPage} from "../pages/modules/modules";
 import {SensorsPage} from "../pages/sensors/sensors";
 import {SettingsPage} from "../pages/settings/settings";
-import {AddUserPage} from "../pages/add-user/add-user";
 import {ModuleInfoPageModule} from "../pages/module-info/module-info.module";
 import {ModuleInfoPage} from "../pages/module-info/module-info";
 import {UserDetailsPageModule} from "../pages/user-details/user-details.module";
@@ -73,7 +71,6 @@ import {EulaAgreementPage} from "../pages/eula-agreement/eula-agreement";
         ModulesPageModule,
         SensorsPageModule,
         SettingsPageModule,
-        AddUserPageModule,
         ModuleInfoPageModule,
         UserDetailsPageModule,
         SettlePaymentPageModule,
@@ -94,7 +91,6 @@ import {EulaAgreementPage} from "../pages/eula-agreement/eula-agreement";
         ModulesPage,
         SensorsPage,
         SettingsPage,
-        AddUserPage,
         ModuleInfoPage,
         UserDetailsPage,
         SettlePaymentPage,
