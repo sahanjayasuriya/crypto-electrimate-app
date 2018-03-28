@@ -33,6 +33,8 @@ export class WelcomePage {
                         if(data.val().userType == 'HOUSE-OWNER'){
                             if (result.emailVerified) {
                                 this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
+                                this.angularFireDatabase.database.ref().child('users/' + result.uid)
+                                    .update({ firstLogin:false});
                                 this.navCtrl.setRoot(HomePage);
                                 this.presentToast("Logged in successfully");
                             } else {
