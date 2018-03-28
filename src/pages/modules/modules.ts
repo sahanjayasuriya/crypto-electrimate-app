@@ -55,7 +55,6 @@ export class ModulesPage {
 
     viewModule(moduleId: string) {
         this.navCtrl.push(ModuleInfoPage,{'moduleId':this.moduleId});
-        console.log(moduleId);
     }
 
     presentLoading() {

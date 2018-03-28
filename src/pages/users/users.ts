@@ -42,17 +42,15 @@ export class UsersPage implements OnInit {
                         for (let sensor of this.sensors) {
                             this.angularFireDatabase.database.ref('users').orderByChild('sensorId').equalTo(sensor).once('value')
                                 .then((data) => {
-                                    console.log(data.val());
                                     for (var key in data.val()) {
                                         var user = data.val()[key];
                                         this.userList.push({id:key, name:user.displayName, created: user.created, photoURL: user.photoURL})
                                     }
-                                    this.loading.dismiss();
                                 }).catch((err) => {
-                                this.loading.dismiss();
                                 console.log(err);
                             });
                         }
+                        this.loading.dismiss();
                     }).catch((err) => {
                     this.loading.dismiss();
                 })
