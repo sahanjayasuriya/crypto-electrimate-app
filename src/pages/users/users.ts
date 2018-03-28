@@ -3,6 +3,8 @@ import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angu
 import {UserDetailsPage} from "../user-details/user-details";
 import {AngularFireAuth} from "angularfire2/auth";
 import {AngularFireDatabase} from "angularfire2/database";
+import {EulaAgreementPage} from "../eula-agreement/eula-agreement";
+import {LastBillPage} from "../last-bill/last-bill";
 
 /**
  * Generated class for the UsersPage page.
@@ -70,4 +72,7 @@ export class UsersPage implements OnInit {
         this.loading.present();
     }
 
+    viewBillDate(){
+        this.navCtrl.push(LastBillPage);
+    }
 }

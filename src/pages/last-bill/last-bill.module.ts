@@ -1,20 +1,13 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule, NavController, NavParams } from 'ionic-angular';
-import { HomePage } from '../home/home';
-import { LastBillComponent } from './last-bill.component';
+import { IonicPageModule } from 'ionic-angular';
+import { LastBillPage } from './last-bill';
 
 @NgModule({
-    declarations: [
-        LastBillComponent
-    ],
-    imports: [
-        IonicPageModule.forChild(HomePage),
-    ]
+  declarations: [
+    LastBillPage,
+  ],
+  imports: [
+    IonicPageModule.forChild(LastBillPage),
+  ],
 })
-export class LastBillModule {
-
-
-    constructor(public navCtrl: NavController,
-                public navParams: NavParams) {
-    }
-}
+export class LastBillPageModule {}

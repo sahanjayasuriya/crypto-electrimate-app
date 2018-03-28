@@ -4,6 +4,8 @@ import {AngularFireAuth} from "angularfire2/auth";
 import {AngularFireDatabase} from "angularfire2/database";
 import {CreateUserPage} from "../create-user/create-user";
 import {ModuleInfoPage} from "../module-info/module-info";
+import {EulaAgreementPage} from "../eula-agreement/eula-agreement";
+import {LastBillPage} from "../last-bill/last-bill";
 
 /**
  * Generated class for the ModulesPage page.
@@ -64,4 +66,7 @@ export class ModulesPage {
         this.loading.present();
     }
 
+    viewBillDate(){
+        this.navCtrl.push(LastBillPage);
+    }
 }

@@ -1,4 +1,4 @@
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {Camera} from '@ionic-native/camera';
@@ -6,7 +6,6 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {File} from '@ionic-native/file';
 import {StatusBar} from '@ionic-native/status-bar';
 import {IonicStorageModule} from '@ionic/storage';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
 
@@ -51,6 +50,8 @@ import {EulaPageModule} from "../pages/eula/eula.module";
 import {EulaPage} from "../pages/eula/eula";
 import {EulaAgreementPageModule} from "../pages/eula-agreement/eula-agreement.module";
 import {EulaAgreementPage} from "../pages/eula-agreement/eula-agreement";
+import {LastBillPage} from "../pages/last-bill/last-bill";
+import {LastBillPageModule} from "../pages/last-bill/last-bill.module";
 
 @NgModule({
     declarations: [
@@ -78,7 +79,8 @@ import {EulaAgreementPage} from "../pages/eula-agreement/eula-agreement";
         PasswordResetPageModule,
         PasswordChangePageModule,
         EulaPageModule,
-        EulaAgreementPageModule
+        EulaAgreementPageModule,
+        LastBillPageModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -98,7 +100,8 @@ import {EulaAgreementPage} from "../pages/eula-agreement/eula-agreement";
         PasswordResetPage,
         PasswordChangePage,
         EulaPage,
-        EulaAgreementPage
+        EulaAgreementPage,
+        LastBillPage
     ],
     providers: [
         Camera,

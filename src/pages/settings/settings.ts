@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UserProfilePage} from "../user-profile/user-profile";
 import {PasswordChangePage} from "../password-change/password-change";
+import {EulaAgreementPage} from "../eula-agreement/eula-agreement";
+import {LastBillPage} from "../last-bill/last-bill";
 
 /**
  * Generated class for the SettingsPage page.
@@ -12,23 +14,27 @@ import {PasswordChangePage} from "../password-change/password-change";
 
 @IonicPage()
 @Component({
-  selector: 'page-settings',
-  templateUrl: 'settings.html',
+    selector: 'page-settings',
+    templateUrl: 'settings.html',
 })
 export class SettingsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
-  }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad SettingsPage');
+    }
 
-  editProfileClicked() {
-    this.navCtrl.push(UserProfilePage);
-  }
+    editProfileClicked() {
+        this.navCtrl.push(UserProfilePage);
+    }
 
-  changePasswordClicked() {
-    this.navCtrl.push(PasswordChangePage);
-  }
+    changePasswordClicked() {
+        this.navCtrl.push(PasswordChangePage);
+    }
+
+    viewBillDate() {
+        this.navCtrl.push(LastBillPage);
+    }
 }
