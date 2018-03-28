@@ -1,12 +1,14 @@
-import {ScanQrPage} from "../scan-qr/scan-qr";
-import {IonicPage, NavController, NavParams} from "ionic-angular";
-import {Component, ViewChild} from "@angular/core";
-import {Chart} from 'chart.js';
+import { Component, ViewChild } from "@angular/core";
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Chart } from 'chart.js';
+import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { ScanQrPage } from "../scan-qr/scan-qr";
 
 @IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html',
+    selector: 'page-home',
+    templateUrl: 'home.html',
 })
 export class HomePage {
 
@@ -16,7 +18,14 @@ export class HomePage {
     user1: String = "Deshani Vimukthika";
     startDate: Date;
     dueDate: Date;
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    private currentUserId: string;
+
+    constructor(public navCtrl: NavController,
+                public navParams: NavParams,
+                private angularFireAuth: AngularFireAuth,
+                private angularFireDatabase: AngularFireDatabase) {
+
+        this.currentUserId = this.angularFireAuth.auth.currentUser.uid;
     }
 
     ngAfterViewInit() {
@@ -61,12 +70,31 @@ export class HomePage {
     }
 
 
-    checkUsage(startDate,dueDate) {
-       this.startDate=startDate;
-        this.dueDate=dueDate;
-        this.showChart = true;
-        console.log("+++++"+dueDate);
-        this.ngAfterViewInit()
+    checkUsage(startDate, dueDate) {
+        // this.startDate = startDate;
+        // this.dueDate = dueDate;
+        // this.showChart = true;
+        // console.log("+++++" + dueDate);
+        // this.ngAfterViewInit()
+        console.log(startDate);
+        console.log(dueDate);
+        this.angularFireDatabase.database.ref('users/' + this.currentUserId + '/modules')
+            .once('value', moduleSnapshot => {
+                const modules: string[] = moduleSnapshot.val();
+                modules.forEach(module => {
+                    this.angularFireDatabase.database.ref('modules/' + module + '/sensors')
+                        .once('value', sensorSnapshot => {
+                            const sensors: string[] = sensorSnapshot.val();
+                            sensors.forEach(sensor => {
+                                this.angularFireDatabase.database.ref('sensors/' + sensor + '/processed/' + 2018)
+                                    .orderByKey().startAt('3').endAt('4').once('value', processedSnapshot => {
+                                    console.log(processedSnapshot.val());
+                                })
+                            })
+                        })
+                })
+
+            })
     }
 
     scanSensor() {
@@ -74,6 +102,6 @@ export class HomePage {
     }
 
     showHistory() {
-
+        alert('dfgfdfgfdf')
     }
 }

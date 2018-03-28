@@ -93,4 +93,5 @@
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <engine name="browser" spec="5.0.3" />
     <engine name="android" spec="7.0.0" />
+    <allow-navigation href="http://192.168.8.101:8100"/>
 </widget>
