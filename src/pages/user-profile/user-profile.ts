@@ -1,8 +1,9 @@
 import {AngularFireAuth} from "angularfire2/auth";
 import {
-    ActionSheetController, Events,
-    IonicPage, LoadingController,
-    ModalController,
+    ActionSheetController,
+    Events,
+    IonicPage,
+    LoadingController,
     NavController,
     NavParams,
     ToastController
@@ -12,8 +13,8 @@ import {Camera} from "@ionic-native/camera";
 import {FirebaseApp} from 'angularfire2';
 import {User} from "../../model/user";
 import * as firebase from "firebase/app";
-import AuthCredential = firebase.auth.AuthCredential;
 import {AngularFireDatabase} from "angularfire2/database";
+import AuthCredential = firebase.auth.AuthCredential;
 
 /**
  * Generated class for the UserProfilePage page.
@@ -48,7 +49,7 @@ export class UserProfilePage {
         const currentUser = this.angularFireAuth.auth.currentUser;
         this.angularFireDatabase.database.ref('users/' + currentUser.uid).once('value')
             .then((data) => {
-                if(data.val().userType == 'HOUSE-OWNER'){
+                if (data.val().userType == 'HOUSE-OWNER') {
                     this.user.phoneNumber = currentUser.phoneNumber;
                 } else {
                     this.user.phoneNumber = data.val().phoneNumber;

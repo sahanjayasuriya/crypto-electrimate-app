@@ -1,11 +1,8 @@
 import {BarcodeScanner} from "@ionic-native/barcode-scanner";
 import {Component} from "@angular/core";
-import {AlertController, Events, IonicPage, NavController, NavParams, ToastController} from "ionic-angular";
+import {AlertController, IonicPage, NavController, NavParams} from "ionic-angular";
 import {CreateUserPage} from "../create-user/create-user";
-import {AngularFireAuth} from "angularfire2/auth";
 import {AngularFireDatabase} from "angularfire2/database";
-import {FirebaseListObservable} from "angularfire2/database-deprecated";
-import {SensorsPageModule} from "../sensors/sensors.module";
 
 /**
  * Generated class for the ScanQrPage page.
@@ -36,7 +33,7 @@ export class ScanQrPage {
             this.sensorId = barcodeData.text;
             this.angularFireDatabase.database.ref('/sensors/' + this.sensorId).once('value')
                 .then((data) => {
-                    if(null != data.val()){
+                    if (null != data.val()) {
                         this.showConfirm();
                     } else {
                         this.showError();
@@ -62,7 +59,7 @@ export class ScanQrPage {
                     text: 'Yes',
                     handler: () => {
                         console.log('Yes clicked');
-                        this.navCtrl.push(CreateUserPage,{'sensorId':this.sensorId});
+                        this.navCtrl.push(CreateUserPage, {'sensorId': this.sensorId});
                     }
                 }
             ],

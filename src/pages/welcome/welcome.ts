@@ -5,7 +5,6 @@ import {User} from "../../model/user";
 import {HomePage} from "../home/home";
 import {PasswordResetPage} from "../password-reset/password-reset";
 import {AngularFireDatabase} from "angularfire2/database";
-import {CreateUserPage} from "../create-user/create-user";
 import {UserProfilePage} from "../user-profile/user-profile";
 
 @IonicPage()
@@ -33,11 +32,11 @@ export class WelcomePage {
             .then((result) => {
                 this.angularFireDatabase.database.ref('users/' + result.uid).once('value')
                     .then((data) => {
-                        if(data.val().userType == 'HOUSE-OWNER'){
+                        if (data.val().userType == 'HOUSE-OWNER') {
                             if (result.emailVerified) {
                                 this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
                                 this.presentToast("Logged in successfully");
-                                if(data.val().firstLogin){
+                                if (data.val().firstLogin) {
                                     this.showEditProfile();
                                     this.setFirstLogin();
                                 } else {
@@ -51,7 +50,7 @@ export class WelcomePage {
                         } else {
                             this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
                             this.presentToast("Logged in successfully");
-                            if(data.val().firstLogin){
+                            if (data.val().firstLogin) {
                                 this.showEditProfile();
                                 this.setFirstLogin();
                             } else {
@@ -61,7 +60,6 @@ export class WelcomePage {
                         this.loading.dismiss();
                     }).catch((err) => {
                     console.log(err);
-                    this.loading.dismiss();
                 });
 
             }).catch((err) => {
@@ -100,9 +98,9 @@ export class WelcomePage {
         this.loading.present();
     }
 
-    setFirstLogin(){
+    setFirstLogin() {
         this.angularFireDatabase.database.ref('users/' + this.angularFireAuth.auth.currentUser.uid).update({
-            firstLogin:false
+            firstLogin: false
         }).catch((err) => {
             console.log(err);
         })

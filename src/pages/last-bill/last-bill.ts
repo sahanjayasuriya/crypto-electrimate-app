@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 
 /**
  * Generated class for the LastBillPage page.
@@ -10,16 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-last-bill',
-  templateUrl: 'last-bill.html',
+    selector: 'page-last-bill',
+    templateUrl: 'last-bill.html',
 })
 export class LastBillPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LastBillPage');
-  }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad LastBillPage');
+    }
 
 }

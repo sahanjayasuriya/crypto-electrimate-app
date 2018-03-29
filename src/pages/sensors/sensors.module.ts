@@ -3,14 +3,14 @@ import {IonicPageModule} from 'ionic-angular';
 import {SensorsPage} from './sensors';
 
 @NgModule({
-  declarations: [
-    SensorsPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(SensorsPage),
-  ],
+    declarations: [
+        SensorsPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(SensorsPage),
+    ],
 })
 export class SensorsPageModule {
-  $key: String;
-  title: String;
+    $key: String;
+    title: String;
 }

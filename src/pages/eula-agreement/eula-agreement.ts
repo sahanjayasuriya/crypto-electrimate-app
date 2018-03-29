@@ -18,7 +18,7 @@ export class EulaAgreementPage {
     constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
     }
 
-    dismiss(){
+    dismiss() {
         this.viewCtrl.dismiss();
     }
 

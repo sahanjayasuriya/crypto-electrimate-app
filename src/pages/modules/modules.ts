@@ -2,9 +2,7 @@ import {Component} from '@angular/core';
 import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {AngularFireAuth} from "angularfire2/auth";
 import {AngularFireDatabase} from "angularfire2/database";
-import {CreateUserPage} from "../create-user/create-user";
 import {ModuleInfoPage} from "../module-info/module-info";
-import {EulaAgreementPage} from "../eula-agreement/eula-agreement";
 import {LastBillPage} from "../last-bill/last-bill";
 
 /**
@@ -56,7 +54,7 @@ export class ModulesPage {
     }
 
     viewModule(moduleId: string) {
-        this.navCtrl.push(ModuleInfoPage,{'moduleId':this.moduleId});
+        this.navCtrl.push(ModuleInfoPage, {'moduleId': this.moduleId});
     }
 
     presentLoading() {
@@ -66,7 +64,7 @@ export class ModulesPage {
         this.loading.present();
     }
 
-    viewBillDate(){
+    viewBillDate() {
         this.navCtrl.push(LastBillPage);
     }
 }

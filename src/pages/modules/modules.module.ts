@@ -3,12 +3,12 @@ import {IonicPageModule} from 'ionic-angular';
 import {ModulesPage} from './modules';
 
 @NgModule({
-  declarations: [
-    ModulesPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(ModulesPage),
-  ],
+    declarations: [
+        ModulesPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(ModulesPage),
+    ],
 })
 export class ModulesPageModule {
 }

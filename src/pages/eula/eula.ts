@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {IonicPage, LoadingController, ModalController, NavController, NavParams, Platform} from 'ionic-angular';
 import {WelcomePage} from "../welcome/welcome";
 import {Storage} from '@ionic/storage';
-import {SettlePaymentPage} from "../settle-payment/settle-payment";
 import {EulaAgreementPage} from "../eula-agreement/eula-agreement";
 
 @IonicPage()
@@ -10,7 +9,7 @@ import {EulaAgreementPage} from "../eula-agreement/eula-agreement";
     selector: 'page-eula',
     templateUrl: 'eula.html',
 })
-export class EulaPage implements OnInit{
+export class EulaPage implements OnInit {
     public options;
     private loading: any;
 
@@ -34,7 +33,7 @@ export class EulaPage implements OnInit{
         this.navCtrl.setRoot(WelcomePage);
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.presentLoading();
         this.storage.get('showEula').then((value) => {
             if (value == 0) {
@@ -56,12 +55,12 @@ export class EulaPage implements OnInit{
         this.loading.present();
     }
 
-    showEula(){
+    showEula() {
         let eulaModel = this.modalCtrl.create(EulaAgreementPage);
         eulaModel.present();
     }
 
-    exit(){
+    exit() {
         this.platform.exitApp();
     }
 }

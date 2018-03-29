@@ -3,12 +3,12 @@ import {IonicPageModule} from 'ionic-angular';
 import {SettlePaymentPage} from './settle-payment';
 
 @NgModule({
-  declarations: [
-    SettlePaymentPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(SettlePaymentPage),
-  ],
+    declarations: [
+        SettlePaymentPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(SettlePaymentPage),
+    ],
 })
 export class SettlePaymentPageModule {
 }

@@ -6,41 +6,41 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Create User</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Create User</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-list>
+    <ion-list>
 
-    <ion-item>
-      <ion-label floating>Sensor Id</ion-label>
-      <ion-input type="text" [disabled]="true" [(ngModel)]="user.sensorId"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label floating>Sensor Id</ion-label>
+            <ion-input type="text" [disabled]="true" [(ngModel)]="user.sensorId"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label floating>Select Module</ion-label>
-      <ion-select [(ngModel)]="user.moduleId">
-        <ion-option *ngFor="let module of modules" value="{{ module.value }}">{{ module.label }}</ion-option>
-      </ion-select>
-    </ion-item>
+        <ion-item>
+            <ion-label floating>Select Module</ion-label>
+            <ion-select [(ngModel)]="user.moduleId">
+                <ion-option *ngFor="let module of modules" value="{{ module.value }}">{{ module.label }}</ion-option>
+            </ion-select>
+        </ion-item>
 
-    <ion-item>
-      <ion-label floating>Email</ion-label>
-      <ion-input type="email" [(ngModel)]="user.email"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label floating>Email</ion-label>
+            <ion-input type="email" [(ngModel)]="user.email"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label floating>Connected Pin</ion-label>
-      <ion-input type="number" [(ngModel)]="user.connectedPin"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label floating>Connected Pin</ion-label>
+            <ion-input type="number" [(ngModel)]="user.connectedPin"></ion-input>
+        </ion-item>
 
-    <div padding>
-      <button ion-button color="primary" (click)="saveUser()" block>Save</button>
-    </div>
+        <div padding>
+            <button ion-button color="primary" (click)="saveUser()" block>Save</button>
+        </div>
 
-  </ion-list>
+    </ion-list>
 </ion-content>

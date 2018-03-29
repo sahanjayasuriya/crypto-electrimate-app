@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
-import {UserDetailsPage} from "../user-details/user-details";
 import {AngularFireAuth} from "angularfire2/auth";
 import {AngularFireDatabase} from "angularfire2/database";
-import {EulaAgreementPage} from "../eula-agreement/eula-agreement";
 import {LastBillPage} from "../last-bill/last-bill";
 
 /**
@@ -46,7 +44,12 @@ export class UsersPage implements OnInit {
                                 .then((data) => {
                                     for (var key in data.val()) {
                                         var user = data.val()[key];
-                                        this.userList.push({id:key, name:user.displayName, created: user.created, photoURL: user.photoURL})
+                                        this.userList.push({
+                                            id: key,
+                                            name: user.displayName,
+                                            created: user.created,
+                                            photoURL: user.photoURL
+                                        })
                                     }
                                 }).catch((err) => {
                                 console.log(err);
@@ -72,7 +75,7 @@ export class UsersPage implements OnInit {
         this.loading.present();
     }
 
-    viewBillDate(){
+    viewBillDate() {
         this.navCtrl.push(LastBillPage);
     }
 }

@@ -1,31 +1,31 @@
 <ion-content scroll="false">
-  <div class="splash-bg"></div>
-  <div class="splash-info">
-    <div class="splash-logo"></div>
-    <div class="splash-intro">
-      <h1>ElectriMate</h1>
-    </div>
-  </div>
-  <div padding>
-    <form (submit)="doLogin()">
-      <ion-list>
-        <ion-item>
-          <ion-label floating>Username</ion-label>
-          <ion-input type="email" [(ngModel)]="user.email" name="email"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label floating="">Password</ion-label>
-          <ion-input type="password" [(ngModel)]="user.password" name="password"></ion-input>
-        </ion-item>
-
-        <div padding>
-          <button ion-button color="primary" block>Login</button>
-          <br>
-          <a href="#" style="text-align: right" (click)="resetPasswordClicked()">Forgot Password?</a>
+    <div class="splash-bg"></div>
+    <div class="splash-info">
+        <div class="splash-logo"></div>
+        <div class="splash-intro">
+            <h1>ElectriMate</h1>
         </div>
-      </ion-list>
-      <p style="font-size: 9px; color: #999999; text-align: center">V.1.0.0 <br/> Developed by Team Crypto</p>
-    </form>
-  </div>
+    </div>
+    <div padding>
+        <form (submit)="doLogin()">
+            <ion-list>
+                <ion-item>
+                    <ion-label floating>Username</ion-label>
+                    <ion-input type="email" [(ngModel)]="user.email" name="email"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label floating="">Password</ion-label>
+                    <ion-input type="password" [(ngModel)]="user.password" name="password"></ion-input>
+                </ion-item>
+
+                <div padding>
+                    <button ion-button color="primary" block>Login</button>
+                    <br>
+                    <a href="#" style="text-align: right" (click)="resetPasswordClicked()">Forgot Password?</a>
+                </div>
+            </ion-list>
+            <p style="font-size: 9px; color: #999999; text-align: center">V.1.0.0 <br/> Developed by Team Crypto</p>
+        </form>
+    </div>
 </ion-content>

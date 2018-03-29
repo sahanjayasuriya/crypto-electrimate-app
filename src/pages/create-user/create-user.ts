@@ -17,11 +17,11 @@ import {AngularFireDatabase} from "angularfire2/database";
     selector: 'page-create-user',
     templateUrl: 'create-user.html',
 })
-export class CreateUserPage implements OnInit{
+export class CreateUserPage implements OnInit {
 
     user: ElectricityUser;
     currentUserId: string;
-    modules: Array<{value:string, label:string}>;
+    modules: Array<{ value: string, label: string }>;
     defaultPassword: string = '123456';
 
     constructor(public navCtrl: NavController,
@@ -31,13 +31,13 @@ export class CreateUserPage implements OnInit{
                 private toastCtrl: ToastController) {
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.user = new ElectricityUser();
         this.user.sensorId = this.navParams.get('sensorId');
         this.currentUserId = this.angularFireAuth.auth.currentUser.uid;
         this.angularFireDatabase.database.ref('users/' + this.currentUserId + '/modules').once('value')
             .then((data) => {
-                const list: Array<{value:string, label:string}> = [];
+                const list: Array<{ value: string, label: string }> = [];
                 data.val().forEach((module) => {
                     this.angularFireDatabase.database.ref('modules/' + module).once('value')
                         .then((data) => {
@@ -51,7 +51,7 @@ export class CreateUserPage implements OnInit{
                 this.modules = list;
             }, (err) => {
                 console.log(err);
-            }).catch((err) =>{
+            }).catch((err) => {
             console.log(err);
         })
     }
@@ -78,18 +78,18 @@ export class CreateUserPage implements OnInit{
 
                     this.angularFireDatabase.database.ref('modules/' + this.user.moduleId + '/sensors')
                         .once('value').then((data) => {
-                            if(data.val() != null){
-                                sensors = data.val();
-                            }
-                            sensors.push(this.user.sensorId);
-                            this.angularFireDatabase.database.ref('modules/' + this.user.moduleId + '/sensors').set(
-                                sensors
-                            ).then(() => {
-                                this.presentToast("User saved successfully");
-                                this.navCtrl.push(HomePage);
-                            }).catch((err) => {
-                                this.presentToast("Error occurred while saving");
-                            });
+                        if (data.val() != null) {
+                            sensors = data.val();
+                        }
+                        sensors.push(this.user.sensorId);
+                        this.angularFireDatabase.database.ref('modules/' + this.user.moduleId + '/sensors').set(
+                            sensors
+                        ).then(() => {
+                            this.presentToast("User saved successfully");
+                            this.navCtrl.push(HomePage);
+                        }).catch((err) => {
+                            this.presentToast("Error occurred while saving");
+                        });
                     })
                 })
             }).catch((err) => {

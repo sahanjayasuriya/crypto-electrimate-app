@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UserProfilePage} from "../user-profile/user-profile";
 import {PasswordChangePage} from "../password-change/password-change";
-import {EulaAgreementPage} from "../eula-agreement/eula-agreement";
 import {LastBillPage} from "../last-bill/last-bill";
 
 /**

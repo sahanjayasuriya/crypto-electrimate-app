@@ -5,22 +5,22 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
-    <ion-title>Scan QR Code</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Scan QR Code</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-  <div class="qr-header"></div>
-  <div padding>
-    <p>Find the QR code pasted on the sensor and scan to proceed.</p>
-    <button ion-button full icon-left (click)="scanCode()">Scan Code</button>
+    <div class="qr-header"></div>
+    <div padding>
+        <p>Find the QR code pasted on the sensor and scan to proceed.</p>
+        <button ion-button full icon-left (click)="scanCode()">Scan Code</button>
 
 
-    <ion-card *ngIf="scannedCode">
-      Result from Scan: {{scannedCode}}
-    </ion-card>
-  </div>
+        <ion-card *ngIf="scannedCode">
+            Result from Scan: {{scannedCode}}
+        </ion-card>
+    </div>
 </ion-content>

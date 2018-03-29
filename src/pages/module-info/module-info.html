@@ -1,31 +1,31 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Module Details</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Module Details</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-  <div class="module-info-header"></div>
-  <div padding>
-    <ion-row>
-      <ion-col col-6><b>Module Code</b></ion-col>
-      <ion-col col-6>{{moduleName}}</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-6><b>Installed By</b></ion-col>
-      <ion-col col-6>Shanilka Jayamanna (ELT052)</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-6><b>Installed On</b></ion-col>
-      <ion-col col-6>12-01-2018</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-6><b>No. of Sensors Connected</b></ion-col>
-      <ion-col col-6>{{noOfSensors}}</ion-col>
-    </ion-row>
-    <button ion-button full (click)="viewSensors()">View Sensors</button>
-  </div>
+    <div class="module-info-header"></div>
+    <div padding>
+        <ion-row>
+            <ion-col col-6><b>Module Code</b></ion-col>
+            <ion-col col-6>{{moduleName}}</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-6><b>Installed By</b></ion-col>
+            <ion-col col-6>Shanilka Jayamanna (ELT052)</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-6><b>Installed On</b></ion-col>
+            <ion-col col-6>12-01-2018</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-6><b>No. of Sensors Connected</b></ion-col>
+            <ion-col col-6>{{noOfSensors}}</ion-col>
+        </ion-row>
+        <button ion-button full (click)="viewSensors()">View Sensors</button>
+    </div>
 </ion-content>

@@ -2,13 +2,12 @@ import {ScanQrPage} from "../scan-qr/scan-qr";
 import {IonicPage, NavController, NavParams} from "ionic-angular";
 import {Component, ViewChild} from "@angular/core";
 import {Chart} from 'chart.js';
-import {EulaAgreementPage} from "../eula-agreement/eula-agreement";
 import {LastBillPage} from "../last-bill/last-bill";
 
 @IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html',
+    selector: 'page-home',
+    templateUrl: 'home.html',
 })
 export class HomePage {
 
@@ -18,6 +17,7 @@ export class HomePage {
     user1: String = "Deshani Vimukthika";
     startDate: Date;
     dueDate: Date;
+
     constructor(public navCtrl: NavController, public navParams: NavParams) {
     }
 
@@ -63,11 +63,11 @@ export class HomePage {
     }
 
 
-    checkUsage(startDate,dueDate) {
-       this.startDate=startDate;
-        this.dueDate=dueDate;
+    checkUsage(startDate, dueDate) {
+        this.startDate = startDate;
+        this.dueDate = dueDate;
         this.showChart = true;
-        console.log("+++++"+dueDate);
+        console.log("+++++" + dueDate);
         this.ngAfterViewInit()
     }
 
@@ -79,7 +79,7 @@ export class HomePage {
 
     }
 
-    viewBillDate(){
+    viewBillDate() {
         this.navCtrl.push(LastBillPage);
     }
 }
