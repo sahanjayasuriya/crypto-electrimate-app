@@ -16,10 +16,10 @@
 <ion-content padding>
     <ion-row>
         <ion-col col-5>
-            <img id="user-pic" src="{{ image }}">
+            <img id="user-pic" src="{{ user.photoURL }}">
         </ion-col>
         <ion-col col-7>
-            <h4 id="user-name">{{ name }}</h4>
+            <h4 id="user-name">{{ user.displayName }}</h4>
             <h6 id="user-joined">Added {{ joined}} months ago</h6>
         </ion-col>
     </ion-row>
@@ -27,11 +27,11 @@
         <ion-col col-12>
             <ion-row>
                 <ion-col col-6><b>E-Mail</b></ion-col>
-                <ion-col col-6>deshani@gmail.com</ion-col>
+                <ion-col col-6>{{ user.email }}</ion-col>
             </ion-row>
             <ion-row>
                 <ion-col col-6><b>Mobile Number</b></ion-col>
-                <ion-col col-6>0713204789</ion-col>
+                <ion-col col-6>{{ user.phoneNumber }}</ion-col>
             </ion-row>
         </ion-col>
     </ion-row>
@@ -82,7 +82,7 @@
         </ion-col>
     </ion-row>
     <ion-fab bottom right>
-        <button ion-fab>
+        <button ion-fab [disabled]="user.phoneNumber == null">
             <ion-icon name="contact"></ion-icon>
         </button>
         <ion-fab-list side="top">

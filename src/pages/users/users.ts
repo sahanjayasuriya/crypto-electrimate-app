@@ -3,6 +3,9 @@ import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angu
 import {AngularFireAuth} from "angularfire2/auth";
 import {AngularFireDatabase} from "angularfire2/database";
 import {LastBillPage} from "../last-bill/last-bill";
+import {ModuleInfoPage} from "../module-info/module-info";
+import {UserDetailsPageModule} from "../user-details/user-details.module";
+import {UserDetailsPage} from "../user-details/user-details";
 
 /**
  * Generated class for the UsersPage page.
@@ -65,7 +68,7 @@ export class UsersPage implements OnInit {
     }
 
     viewUserDetails(id: string) {
-        console.log(id);
+        this.navCtrl.push(UserDetailsPage, {'userId': id});
     }
 
     presentLoading() {
