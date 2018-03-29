@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
-import {Events, IonicPage, LoadingController, NavController, ToastController} from 'ionic-angular';
+import {AlertController, Events, IonicPage, LoadingController, NavController, ToastController} from 'ionic-angular';
 import {AngularFireAuth} from "angularfire2/auth";
 import {User} from "../../model/user";
 import {HomePage} from "../home/home";
 import {PasswordResetPage} from "../password-reset/password-reset";
 import {AngularFireDatabase} from "angularfire2/database";
+import {CreateUserPage} from "../create-user/create-user";
+import {UserProfilePage} from "../user-profile/user-profile";
 
 @IonicPage()
 @Component({
@@ -21,7 +23,8 @@ export class WelcomePage {
                 public toastCtrl: ToastController,
                 public events: Events,
                 public loadingCtrl: LoadingController,
-                private angularFireDatabase: AngularFireDatabase) {
+                private angularFireDatabase: AngularFireDatabase,
+                private alertCtrl: AlertController) {
     }
 
     doLogin() {
@@ -33,10 +36,13 @@ export class WelcomePage {
                         if(data.val().userType == 'HOUSE-OWNER'){
                             if (result.emailVerified) {
                                 this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
-                                this.angularFireDatabase.database.ref().child('users/' + result.uid)
-                                    .update({ firstLogin:false});
-                                this.navCtrl.setRoot(HomePage);
                                 this.presentToast("Logged in successfully");
+                                if(data.val().firstLogin){
+                                    this.showEditProfile();
+                                    this.setFirstLogin();
+                                } else {
+                                    this.navCtrl.setRoot(HomePage);
+                                }
                             } else {
                                 this.presentToast("Email not verified. Please verify the email to continue.");
                                 this.angularFireAuth.auth.signOut();
@@ -44,8 +50,13 @@ export class WelcomePage {
                             }
                         } else {
                             this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
-                            this.navCtrl.setRoot(HomePage);
                             this.presentToast("Logged in successfully");
+                            if(data.val().firstLogin){
+                                this.showEditProfile();
+                                this.setFirstLogin();
+                            } else {
+                                this.navCtrl.setRoot(HomePage);
+                            }
                         }
                         this.loading.dismiss();
                     }).catch((err) => {
@@ -87,5 +98,30 @@ export class WelcomePage {
             content: 'Logging in...'
         });
         this.loading.present();
+    }
+
+    setFirstLogin(){
+        this.angularFireDatabase.database.ref('users/' + this.angularFireAuth.auth.currentUser.uid).update({
+            firstLogin:false
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    showEditProfile() {
+        let confirm = this.alertCtrl.create({
+            title: 'Hello there',
+            message: 'It looks like this is your first login. Please take a minute and save your profile details',
+            buttons: [
+                {
+                    text: 'Ok',
+                    handler: () => {
+                        this.navCtrl.push(UserProfilePage);
+                    }
+                }
+            ],
+            cssClass: 'electrimateAlertCss'
+        });
+        confirm.present();
     }
 }
