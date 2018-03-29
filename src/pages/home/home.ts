@@ -1,8 +1,8 @@
-import {ScanQrPage} from "../scan-qr/scan-qr";
-import {IonicPage, NavController, NavParams} from "ionic-angular";
-import {Component, ViewChild} from "@angular/core";
-import {Chart} from 'chart.js';
-import {LastBillPage} from "../last-bill/last-bill";
+import { Component, ViewChild } from "@angular/core";
+import { Chart } from 'chart.js';
+import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { LastBillPage } from "../last-bill/last-bill";
+import { ScanQrPage } from "../scan-qr/scan-qr";
 
 @IonicPage()
 @Component({
@@ -17,7 +17,6 @@ export class HomePage {
     user1: String = "Deshani Vimukthika";
     startDate: Date;
     dueDate: Date;
-
     constructor(public navCtrl: NavController, public navParams: NavParams) {
     }
 

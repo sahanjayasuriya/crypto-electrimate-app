@@ -15,4 +15,25 @@
 
 <ion-content padding>
 
+    <ion-item>
+        <ion-label>Select the Module</ion-label>
+        <ion-select [(ngModel)]="module">
+            <ion-option *ngFor="let module of modules"
+                        [value]="module">
+                {{module.moduleName}}
+            </ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Last Bill Date</ion-label>
+        <ion-datetime placeholder="Tap here to select Last Bill Date"
+                      displayFormat="MMM DD, YYYY h:mm A"
+                      [max]="'2018-03-28'"
+                      [(ngModel)]="lastBillDate"
+                      [minuteValues]="[0]"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <button ion-button full (click)="save()">Save</button>
+    </ion-item>
 </ion-content>
