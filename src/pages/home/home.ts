@@ -1,4 +1,6 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase, DatabaseSnapshot } from 'angularfire2/database';
 import { Chart } from 'chart.js';
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { LastBillPage } from "../last-bill/last-bill";
@@ -9,7 +11,7 @@ import { ScanQrPage } from "../scan-qr/scan-qr";
     selector: 'page-home',
     templateUrl: 'home.html',
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
     @ViewChild('doughnutCanvas') doughnutCanvas;
     doughnutChart: any;
@@ -17,47 +19,71 @@ export class HomePage {
     user1: String = "Deshani Vimukthika";
     startDate: Date;
     dueDate: Date;
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    sensorsAvailable = true;
+    module;
+    bills = [];
+    private modules: any[];
+    private moduleBill: any;
+    private colors = [
+        "#FF6384",
+        "#36A2EB",
+        "#FFCE56",
+        "#CEFF56"
+    ];
+    doughnutData = {
+        labels: [],
+        datasets: [
+            {
+                label: '# of Units',
+                data: [],
+                backgroundColor: this.colors,
+                hoverBackgroundColor: [
+                    "#b43f66",
+                    "#2b7ab4",
+                    "#b5933d",
+                    "#93b53d"
+                ]
+            }
+        ]
+    }
+    private userType: string;
+    private houseOwner: boolean;
+    private loading: boolean = true;
+
+    constructor(public navCtrl: NavController, public navParams: NavParams,
+                private angularFireAuth: AngularFireAuth,
+                private angularFireDatabase: AngularFireDatabase) {
+    }
+
+    ngOnInit() {
+        const userId = this.angularFireAuth.auth.currentUser.uid;
+        this.angularFireDatabase.database.ref('users/' + userId).once('value')
+            .then((userSnapshot: DatabaseSnapshot) => {
+                const user = userSnapshot.val();
+                this.userType = user.userType;
+                this.modules = [];
+                if (this.isHouseOwner()) {
+                    var firstSelected = false;
+                    user.modules.forEach(moduleId => {
+                        this.angularFireDatabase.database.ref('modules/' + moduleId).once('value')
+                            .then(moduleSnapshot => {
+                                const m = moduleSnapshot.val();
+                                m.key = moduleSnapshot.key;
+                                this.modules.push(m);
+                                if (!firstSelected) {
+                                    this.module = m;
+                                    firstSelected = true;
+                                    this.loadData();
+                                }
+                            });
+
+                    });
+                }
+
+            });
     }
 
     ngAfterViewInit() {
-        if (this.navParams.get('viewChart')) {
-            this.showChart = true;
-            setTimeout(() => {
-                this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
-
-                    type: 'doughnut',
-                    data: {
-                        labels: ["user1", "Pamodya De Seram", "Mahela Jayawardane"],
-                        datasets: [{
-                            label: '# of Units',
-                            data: [12, 19, 3],
-                            backgroundColor: [
-                                "#FF6384",
-                                "#36A2EB",
-                                "#FFCE56"
-                            ],
-                            hoverBackgroundColor: [
-                                "#b43f66",
-                                "#2b7ab4",
-                                "#b5933d"
-                            ]
-                        }]
-                    },
-                    options: {
-                        'responsive': true,
-                        'maintainAspectRatio': true,
-                        'transparencyEffects': true,
-                        'dataSetBorderWidth': 2,
-                        'legend': {
-                            'display': false
-                        }
-                    }
-
-                });
-            }, 500);
-        }
-
 
     }
 
@@ -80,5 +106,110 @@ export class HomePage {
 
     viewBillDate() {
         this.navCtrl.push(LastBillPage);
+    }
+
+    loadData(refresher?) {
+        if (this.isHouseOwner()) {
+            this.loadHouseOwnerView(refresher)
+        } else {
+            this.loadTenantView(refresher);
+        }
+    }
+
+    getDate(date) {
+        if (!date || date instanceof String) date = new Date(date || '');
+        return
+
+    }
+
+    precisionRound(number, precision) {
+        var factor = Math.pow(10, precision);
+        return Math.round(number * factor) / factor;
+    }
+
+    private drawDoughnutChart() {
+        console.log(this.doughnutData);
+        this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
+            type: 'doughnut',
+            data: this.doughnutData,
+            options: {
+                'responsive': true,
+                'maintainAspectRatio': true,
+                'transparencyEffects': true,
+                'dataSetBorderWidth': 2,
+                'legend': {
+                    'display': false
+                }
+            }
+
+        });
+    }
+
+    private isHouseOwner() {
+        this.houseOwner = this.userType === 'HOUSE-OWNER'
+        return this.houseOwner;
+    }
+
+    private loadHouseOwnerView(refresher?) {
+        this.loading = true;
+        let colorI = 0;
+        this.bills = [];
+        this.doughnutData.labels = []
+        this.doughnutData.datasets[0].data = []
+        this.angularFireDatabase.database.ref('modules/' + this.module.key + '/bills').orderByChild('current')
+            .equalTo(true).limitToFirst(1)
+            .once('value')
+            .then((moduleBillSnapshot: DatabaseSnapshot) => {
+                moduleBillSnapshot.forEach((moduleBill: DatabaseSnapshot) => {
+                    this.moduleBill = moduleBill.val();
+                    return true;
+                });
+            });
+        this.angularFireDatabase.database.ref('modules/' + this.module.key + '/sensors')
+            .once('value')
+            .then((sensorsSnapshot: DatabaseSnapshot) => {
+                if (sensorsSnapshot.hasChildren()) {
+                    this.sensorsAvailable = true;
+                    console.log(sensorsSnapshot.numChildren());
+                }
+                console.log(sensorsSnapshot.val());
+                sensorsSnapshot.val().forEach((sensor) => {
+                    console.log(sensor);
+                    this.angularFireDatabase.database.ref('sensors/' + sensor + '/bills')
+                        .orderByChild('current').equalTo(true).limitToFirst(1)
+                        .once('value')
+                        .then((billSnapshot: DatabaseSnapshot) => {
+                            console.log(3);
+                            billSnapshot.forEach(e => {
+                                this.angularFireDatabase.database.ref('users').orderByChild('sensorId')
+                                    .equalTo(sensor)
+                                    .limitToFirst(1)
+                                    .once('value')
+                                    .then((usersSensor: DatabaseSnapshot) => {
+                                        const bill = e.val();
+                                        usersSensor.forEach((userSnapshot: DatabaseSnapshot) => {
+                                            bill.user = userSnapshot.val();
+                                            this.doughnutData.labels.push(bill.user.displayName);
+                                            this.doughnutData.datasets[0].data.push(this.precisionRound(bill.wattHours / 1000, 3));
+                                            return true;
+                                        });
+                                        bill.color = this.colors[colorI++];
+                                        this.bills.push(bill);
+                                        this.drawDoughnutChart();
+                                        if (refresher) {
+                                            refresher.complete()
+                                        }
+                                    });
+                                this.loading = false;
+                                return true;
+                            });
+                        });
+                    return true;
+                })
+            })
+    }
+
+    private loadTenantView(refresher?) {
+
     }
 }

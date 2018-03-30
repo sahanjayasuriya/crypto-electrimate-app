@@ -19,4 +19,39 @@ page-home {
     display: block !important;
     color: white;
   }
+
+  .total-bill-card {
+    background-color: #185d62;
+    color: #ffffff;
+    text-align: center;
+    ion-card-header {
+      text-align: left;
+      color: white;
+      font-size: 1.7rem;
+    }
+    b {
+      font-size: 30px;
+
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .tenant-bill-card {
+    color: white;
+    text-align: center;
+    ion-card-header {
+      text-align: left;
+      color: white;
+      font-size: 1.2rem;
+    }
+    b {
+      font-size: 20px;
+
+      span {
+        font-size: 12px;
+      }
+    }
+  }
 }

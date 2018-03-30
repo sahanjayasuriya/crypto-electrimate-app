@@ -29,7 +29,7 @@
         <ion-label>Last Bill Date</ion-label>
         <ion-datetime placeholder="Tap here to select Last Bill Date"
                       displayFormat="MMM DD, YYYY h:mm A"
-                      [max]="'2018-03-28'"
+                      [max]="maxDate"
                       [(ngModel)]="lastBillDate"
                       [minuteValues]="[0]"></ion-datetime>
     </ion-item>

@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {AngularFireAuth} from "angularfire2/auth";
-import {AngularFireDatabase} from "angularfire2/database";
+import { Component } from '@angular/core';
+import { AngularFireAuth } from "angularfire2/auth";
+import { AngularFireDatabase } from "angularfire2/database";
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ScanQrPage } from '../scan-qr/scan-qr';
 
 @IonicPage()
 @Component({
@@ -32,6 +33,10 @@ export class SensorsPage {
                 console.log(err);
             })
         }
+    }
+
+    addSensor() {
+        this.navCtrl.push(ScanQrPage);
     }
 
 }

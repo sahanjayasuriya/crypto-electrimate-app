@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase, DatabaseSnapshot } from 'angularfire2/database';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the LastBillPage page.
@@ -19,15 +19,18 @@ export class LastBillPage implements OnInit {
 
     private modules: any = [];
     private module;
-    private maxDate;
+    private maxDate = '';
     private lastBillDate;
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 private angularFireAuth: AngularFireAuth,
-                private angularFireDatabase: AngularFireDatabase) {
+                private angularFireDatabase: AngularFireDatabase,
+                private toastCtrl: ToastController) {
         const now = new Date();
-        this.maxDate = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
+        const month = now.getMonth() + 1
+        this.maxDate = now.getFullYear() + '-' + (month < 10 ? '0' + month : month) + '-' + now.getDate();
+        console.log(this.maxDate);
     }
 
     ngOnInit(): void {
@@ -87,6 +90,15 @@ export class LastBillPage implements OnInit {
 
                             this.angularFireDatabase.database.ref('sensors/' + sensor + '/bills')
                                 .push(bill);
+                            let toast = this.toastCtrl.create({
+                                message: 'Last bill date added successfully',
+                                duration: 3000,
+                                position: 'bottom'
+                            });
+
+
+                            toast.present();
+                            this.navCtrl.pop();
                         });
                     })
                 })

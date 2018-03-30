@@ -14,79 +14,60 @@
 
 </ion-header>
 <ion-content padding>
+    <ion-refresher (ionRefresh)="loadData($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-grid>
-        <ion-row>
-            <ion-col col-12>
-                <h3 style="text-align: center">No sensors found</h3>
-                <button ion-button full color="danger" (click)="scanSensor()">
-                    <ion-icon name="add"></ion-icon>
-                    &nbsp;Add Sensors
+        <ion-item *ngIf="houseOwner">
+            <ion-label>Select the Module</ion-label>
+            <ion-select [(ngModel)]="module" (ionChange)="loadData()">
+                <ion-option *ngFor="let module of modules"
+                            [value]="module">
+                    {{module.moduleName}}
+                </ion-option>
+            </ion-select>
+        </ion-item>
+        <div [hidden]="loading">
+            <ion-row *ngIf="!sensorsAvailable">
+                <ion-col col-12>
+                    <h3 style="text-align: center">No sensors found</h3>
+                    <button ion-button full color="danger" (click)="scanSensor()">
+                        <ion-icon name="add"></ion-icon>
+                        &nbsp;Add Sensors
+                    </button>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <h3 style="text-align: center">Usage Summary from {{moduleBill?.from|date:'mediumDate'}}</h3>
+                <canvas #doughnutCanvas></canvas>
+                <ion-card class="total-bill-card">
+                    <ion-card-header>Total Usage</ion-card-header>
+                    <ion-card-content>
+                        <ion-row>
+                            <ion-col col-6><b>{{moduleBill?.wattHours/1000|number}}<span>kWh</span></b></ion-col>
+                            <ion-col col-6><b><span>Rs. </span>{{moduleBill?.amount|number:'1.2-2'}}</b></ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+
+                <ion-card class="tenant-bill-card" [ngStyle]="{'background-color': bill.color}"
+                          *ngFor="let bill of bills">
+                    <ion-card-header>
+                        {{bill.user.displayName}}
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-row>
+                            <ion-col col-6><b>{{bill.wattHours/1000|number}}<span>kWh</span></b></ion-col>
+                            <ion-col col-6><b><span>Rs. </span>{{bill.amount|number:'1.2-2'}}</b></ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+
+                <button ion-button full color="primary" (click)="showHistory()">
+                    <ion-icon name="clock"></ion-icon>
+                    &nbsp;View History
                 </button>
-            </ion-col>
-        </ion-row>
-
-        <ion-row>
-            <ion-col col-4>
-                <b>Start Date</b>
-                <ion-datetime displayFormat="MMM DD, YYYY h:mm A" [(ngModel)]="startDate"></ion-datetime>
-            </ion-col>
-            <ion-col col-4>
-                <b>Due Date</b>
-                <ion-datetime displayFormat="MMM DD, YYYY h:mm A" [(ngModel)]="dueDate"></ion-datetime>
-            </ion-col>
-            <ion-col col-12>
-                <button ion-button full color="danger" (click)="checkUsage(startDate,dueDate)">
-                    <ion-icon name="albums" md="md-albums"></ion-icon>
-                    &nbsp;Check Usage
-                </button>
-            </ion-col>
-        </ion-row>
-        <p>{{currentUserId}}</p>
-        <ion-row *ngIf="showChart">
-            <h3 style="text-align: center">Usage Summary - Feb 2018</h3>
-            <canvas #doughnutCanvas></canvas>
-            <ion-card style="background-color: #185d62; color: #ffffff">
-                <ion-card-content>
-                    <ion-row>
-                        <ion-col col-4><b>Total Usage</b></ion-col>
-                        <ion-col col-4><b>149 kWh</b></ion-col>
-                        <ion-col col-4><b>Rs. 3011.50</b></ion-col>
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-
-            <ion-card style="background-color: #FF6384">
-                <ion-card-content>
-                    <ion-row>
-                        <ion-col col-4>Deshani Vimukthika</ion-col>
-                        <ion-col col-4>59.60 kWh</ion-col>
-                        <ion-col col-4>Rs. 1144.25</ion-col>
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-            <ion-card style="background-color: #36A2EB">
-                <ion-card-content>
-                    <ion-row>
-                        <ion-col col-4>Pamodya de Seram</ion-col>
-                        <ion-col col-4>44.70 kWh</ion-col>
-                        <ion-col col-4>Rs. 723.17</ion-col>
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-            <ion-card style="background-color: #FFCE56">
-                <ion-card-content>
-                    <ion-row>
-                        <ion-col col-4>Mahela Abeysekara</ion-col>
-                        <ion-col col-4>7.45 kWh</ion-col>
-                        <ion-col col-4>Rs. 116.77</ion-col>
-                    </ion-row>
-                </ion-card-content>
-            </ion-card>
-
-            <button ion-button full color="primary" (click)="showHistory()">
-                <ion-icon name="clock"></ion-icon>
-                &nbsp;View History
-            </button>
-        </ion-row>
+            </ion-row>
+        </div>
     </ion-grid>
 </ion-content>
