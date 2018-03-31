@@ -14,8 +14,8 @@
                 <img src="assets/img/sensorIcon.png">
             </ion-avatar>
             <h2>Sensor {{i+1}}</h2>
-            <h5>{{sensor.name}}</h5>
-            <h3>Assigned to {{sensor.user}}</h3>
+            <h5>{{sensor.name.sensorId}}</h5>
+            <h3>{{sensor.user?.displayName ? 'Assigned to '+ sensor.user.displayName:'Name not provided'}}</h3>
             <p style="color: #18a64f">Enabled</p>
         </ion-item>
     </ion-list>

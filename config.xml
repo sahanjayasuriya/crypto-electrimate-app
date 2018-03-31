@@ -92,6 +92,6 @@
     <plugin name="cordova-plugin-calendar" spec="^5.0.0" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <allow-navigation href="http://192.168.8.101:8100" />
-    <engine name="browser" spec="5.0.3" />
     <engine name="android" spec="7.0.0" />
+    <engine name="browser" spec="~5.0.3"/>
 </widget>

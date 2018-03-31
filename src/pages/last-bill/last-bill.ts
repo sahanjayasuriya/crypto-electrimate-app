@@ -80,7 +80,7 @@ export class LastBillPage implements OnInit {
                 .then(sensorSnap => {
                     sensorSnap.val().forEach(sensor => {
                         console.log(sensor);
-                        this.angularFireDatabase.database.ref('sensors/' + sensor + '/bills').orderByChild('current').equalTo(true).limitToFirst(1)
+                        this.angularFireDatabase.database.ref('sensors/' + sensor.sensorId + '/bills').orderByChild('current').equalTo(true).limitToFirst(1)
                             .once('value').then((currentBillSnap: DatabaseSnapshot) => {
 
                             currentBillSnap.forEach((a: DatabaseSnapshot) => {
@@ -88,7 +88,7 @@ export class LastBillPage implements OnInit {
                                 return true;
                             });
 
-                            this.angularFireDatabase.database.ref('sensors/' + sensor + '/bills')
+                            this.angularFireDatabase.database.ref('sensors/' + sensor.sensorId + '/bills')
                                 .push(bill);
                             let toast = this.toastCtrl.create({
                                 message: 'Last bill date added successfully',

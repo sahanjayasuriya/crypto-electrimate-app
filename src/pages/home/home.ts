@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase, DatabaseSnapshot } from 'angularfire2/database';
 import { Chart } from 'chart.js';
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, LoadingController, NavController, NavParams } from "ionic-angular";
 import { LastBillPage } from "../last-bill/last-bill";
 import { ScanQrPage } from "../scan-qr/scan-qr";
 
@@ -49,13 +49,16 @@ export class HomePage implements OnInit {
     private userType: string;
     private houseOwner: boolean;
     private loading: boolean = true;
+    private loadingIndicator;
 
     constructor(public navCtrl: NavController, public navParams: NavParams,
                 private angularFireAuth: AngularFireAuth,
-                private angularFireDatabase: AngularFireDatabase) {
+                private angularFireDatabase: AngularFireDatabase,
+                private loadingCtrl: LoadingController) {
     }
 
     ngOnInit() {
+        this.presentLoading();
         const userId = this.angularFireAuth.auth.currentUser.uid;
         this.angularFireDatabase.database.ref('users/' + userId).once('value')
             .then((userSnapshot: DatabaseSnapshot) => {
@@ -150,6 +153,13 @@ export class HomePage implements OnInit {
         return this.houseOwner;
     }
 
+    presentLoading() {
+        this.loadingIndicator = this.loadingCtrl.create({
+            content: 'Loading...'
+        });
+        this.loadingIndicator.present();
+    }
+
     private loadHouseOwnerView(refresher?) {
         this.loading = true;
         let colorI = 0;
@@ -171,45 +181,61 @@ export class HomePage implements OnInit {
                 if (sensorsSnapshot.hasChildren()) {
                     this.sensorsAvailable = true;
                     console.log(sensorsSnapshot.numChildren());
-                }
-                console.log(sensorsSnapshot.val());
-                sensorsSnapshot.val().forEach((sensor) => {
-                    console.log(sensor);
-                    this.angularFireDatabase.database.ref('sensors/' + sensor + '/bills')
-                        .orderByChild('current').equalTo(true).limitToFirst(1)
-                        .once('value')
-                        .then((billSnapshot: DatabaseSnapshot) => {
-                            console.log(3);
-                            billSnapshot.forEach(e => {
-                                this.angularFireDatabase.database.ref('users').orderByChild('sensorId')
-                                    .equalTo(sensor)
-                                    .limitToFirst(1)
-                                    .once('value')
-                                    .then((usersSensor: DatabaseSnapshot) => {
-                                        const bill = e.val();
-                                        usersSensor.forEach((userSnapshot: DatabaseSnapshot) => {
-                                            bill.user = userSnapshot.val();
-                                            this.doughnutData.labels.push(bill.user.displayName);
-                                            this.doughnutData.datasets[0].data.push(this.precisionRound(bill.wattHours / 1000, 3));
-                                            return true;
-                                        });
-                                        bill.color = this.colors[colorI++];
-                                        this.bills.push(bill);
-                                        this.drawDoughnutChart();
-                                        if (refresher) {
-                                            refresher.complete()
-                                        }
+
+                    console.log(sensorsSnapshot.val());
+                    sensorsSnapshot.val().forEach((sensor) => {
+                        console.log(sensor);
+                        this.angularFireDatabase.database.ref('sensors/' + sensor.sensorId + '/bills')
+                            .orderByChild('current').equalTo(true).limitToFirst(1)
+                            .once('value')
+                            .then((billSnapshot: DatabaseSnapshot) => {
+                                if (billSnapshot.hasChildren()) {
+                                    billSnapshot.forEach(e => {
+                                        this.angularFireDatabase.database.ref('users').orderByChild('sensorId')
+                                            .equalTo(sensor.sensorId)
+                                            .limitToFirst(1)
+                                            .once('value')
+                                            .then((usersSensor: DatabaseSnapshot) => {
+                                                const bill = e.val();
+                                                usersSensor.forEach((userSnapshot: DatabaseSnapshot) => {
+                                                    bill.user = userSnapshot.val();
+                                                    this.doughnutData.labels.push(bill.user.displayName);
+                                                    this.doughnutData.datasets[0].data.push(this.precisionRound(bill.wattHours / 1000, 3));
+                                                    return true;
+                                                });
+                                                bill.color = this.colors[colorI++];
+                                                this.bills.push(bill);
+                                                this.loadingIndicator.dismiss()
+                                                this.drawDoughnutChart();
+                                                if (refresher) {
+                                                    refresher.complete()
+                                                }
+                                            })
+                                            .catch(() => {
+                                                this.loadingIndicator.dismiss()
+                                                if (refresher) {
+                                                    refresher.complete()
+                                                }
+                                            });
+                                        this.loading = false;
+                                        return true;
                                     });
-                                this.loading = false;
-                                return true;
+                                } else {
+                                    this.loadingIndicator.dismiss()
+                                    if (refresher) {
+                                        refresher.complete()
+                                    }
+                                }
                             });
-                        });
-                    return true;
-                })
+                        return true;
+                    })
+                } else {
+                    this.loadingIndicator.dismiss();
+                    this.sensorsAvailable = false;
+                }
             })
     }
 
     private loadTenantView(refresher?) {
-
     }
 }

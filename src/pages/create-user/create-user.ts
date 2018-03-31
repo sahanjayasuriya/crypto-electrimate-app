@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
-import {HomePage} from "../home/home";
-import {ElectricityUser} from "../../model/electricity-user";
-import {AngularFireAuth} from "angularfire2/auth";
-import {AngularFireDatabase} from "angularfire2/database";
+import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from "angularfire2/auth";
+import { AngularFireDatabase } from "angularfire2/database";
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { ElectricityUser } from "../../model/electricity-user";
+import { HomePage } from "../home/home";
 
 /**
  * Generated class for the CreateUserPage page.
@@ -72,16 +72,33 @@ export class CreateUserPage implements OnInit {
                 }).then((userData) => {
                     this.angularFireDatabase.database.ref('sensors/' + this.user.sensorId).update({
                         pin: this.user.connectedPin
-                    }).catch((err) => {
-                        this.presentToast("Error occured while saving");
-                    });
+                    })
+                        .then(() => {
+                            this.angularFireDatabase.database.ref('modules/' + this.user.moduleId + '/bills').orderByChild('current')
+                                .equalTo(true).limitToFirst(1)
+                                .once('value')
+                                .then(billSnap => {
+                                    billSnap.forEach(bill => {
+                                        const from = bill.val().from;
+                                        this.angularFireDatabase.database.ref('sensors/' + this.user.sensorId + '/bills')
+                                            .push({
+                                                from: from,
+                                                current: true
+                                            })
+                                    })
+                                })
+                        })
+                        .catch((err) => {
+                            this.presentToast("Error occurred while saving");
+                        });
 
                     this.angularFireDatabase.database.ref('modules/' + this.user.moduleId + '/sensors')
                         .once('value').then((data) => {
                         if (data.val() != null) {
                             sensors = data.val();
                         }
-                        sensors.push(this.user.sensorId);
+                        const sensorObj = {sensorId: this.user.sensorId, pin: this.user.connectedPin};
+                        sensors.push(sensorObj);
                         this.angularFireDatabase.database.ref('modules/' + this.user.moduleId + '/sensors').set(
                             sensors
                         ).then(() => {
@@ -91,6 +108,7 @@ export class CreateUserPage implements OnInit {
                             this.presentToast("Error occurred while saving");
                         });
                     })
+
                 })
             }).catch((err) => {
             this.presentToast("Error occured while saving");

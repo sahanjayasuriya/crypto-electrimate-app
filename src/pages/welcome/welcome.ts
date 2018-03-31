@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
-import {AlertController, Events, IonicPage, LoadingController, NavController, ToastController} from 'ionic-angular';
-import {AngularFireAuth} from "angularfire2/auth";
-import {User} from "../../model/user";
-import {HomePage} from "../home/home";
-import {PasswordResetPage} from "../password-reset/password-reset";
-import {AngularFireDatabase} from "angularfire2/database";
-import {UserProfilePage} from "../user-profile/user-profile";
+import { Component } from '@angular/core';
+import { AngularFireAuth } from "angularfire2/auth";
+import { AngularFireDatabase } from "angularfire2/database";
+import { AlertController, Events, IonicPage, LoadingController, NavController, ToastController } from 'ionic-angular';
+import { User } from "../../model/user";
+import { HomePage } from "../home/home";
+import { PasswordResetPage } from "../password-reset/password-reset";
+import { UserProfilePage } from "../user-profile/user-profile";
 
 @IonicPage()
 @Component({
@@ -59,12 +59,15 @@ export class WelcomePage {
                         }
                         this.loading.dismiss();
                     }).catch((err) => {
+                    this.loading.dismiss()
                     console.log(err);
                 });
 
-            }).catch((err) => {
-            this.presentToast("Incorrect Credentials")
-        })
+            })
+            .catch((err) => {
+                this.loading.dismiss()
+                this.presentToast("Incorrect Credentials")
+            })
     }
 
     resetPasswordClicked() {

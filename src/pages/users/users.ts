@@ -1,11 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
-import {AngularFireAuth} from "angularfire2/auth";
-import {AngularFireDatabase} from "angularfire2/database";
-import {LastBillPage} from "../last-bill/last-bill";
-import {ModuleInfoPage} from "../module-info/module-info";
-import {UserDetailsPageModule} from "../user-details/user-details.module";
-import {UserDetailsPage} from "../user-details/user-details";
+import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from "angularfire2/auth";
+import { AngularFireDatabase } from "angularfire2/database";
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { LastBillPage } from "../last-bill/last-bill";
+import { UserDetailsPage } from "../user-details/user-details";
 
 /**
  * Generated class for the UsersPage page.
@@ -23,7 +21,7 @@ export class UsersPage implements OnInit {
 
     moduleId: string;
     userId: string;
-    sensors: Array<string>;
+    sensors: Array<{ sensorId: string, pin: number }>;
     userList: Array<{ id: string, name: string; created: string; photoURL: string }> = [];
     loading: any;
 
@@ -43,7 +41,7 @@ export class UsersPage implements OnInit {
                     .then((sensors) => {
                         this.sensors = sensors.val();
                         for (let sensor of this.sensors) {
-                            this.angularFireDatabase.database.ref('users').orderByChild('sensorId').equalTo(sensor).once('value')
+                            this.angularFireDatabase.database.ref('users').orderByChild('sensorId').equalTo(sensor.sensorId).once('value')
                                 .then((data) => {
                                     for (var key in data.val()) {
                                         var user = data.val()[key];
