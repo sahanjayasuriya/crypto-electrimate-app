@@ -38,6 +38,23 @@ page-home {
     }
   }
 
+  .owner-tenant-bill-card {
+    color: white;
+    text-align: center;
+    ion-card-header {
+      text-align: left;
+      color: white;
+      font-size: 1.2rem;
+    }
+    b {
+      font-size: 20px;
+
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+
   .tenant-bill-card {
     background-color: #e74c3c;
     color: white;

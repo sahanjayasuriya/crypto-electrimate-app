@@ -49,7 +49,7 @@
                         </ion-card-content>
                     </ion-card>
 
-                    <ion-card class="tenant-bill-card" [ngStyle]="{'background-color': bill.color}"
+                    <ion-card class="owner-tenant-bill-card" [ngStyle]="{'background-color': bill.color}"
                               *ngFor="let bill of bills">
                         <ion-card-header style="text-align: center">
                             <b>{{bill.user.displayName == undefined? 'No Name' : bill.user.displayName}}</b>
