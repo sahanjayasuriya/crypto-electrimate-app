@@ -15,6 +15,7 @@ import {User} from "../../model/user";
 import * as firebase from "firebase/app";
 import {AngularFireDatabase} from "angularfire2/database";
 import AuthCredential = firebase.auth.AuthCredential;
+import {HomePage} from "../home/home";
 
 /**
  * Generated class for the UserProfilePage page.
@@ -134,7 +135,8 @@ export class UserProfilePage {
                 phoneNumber: this.user.phoneNumber
             });
             this.presentToast("User details updated successfully");
-            this.events.publish('user:updated', this.angularFireAuth.auth.currentUser, Date.now())
+            this.events.publish('user:updated', this.angularFireAuth.auth.currentUser, Date.now());
+            this.navCtrl.push(HomePage);
         }).catch((err) => {
             this.presentToast("Error updating user details. " + err.message);
         })

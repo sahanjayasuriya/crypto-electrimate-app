@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase, DatabaseSnapshot } from 'angularfire2/database';
-import { Chart } from 'chart.js';
-import { IonicPage, LoadingController, NavController, NavParams } from "ionic-angular";
-import { LastBillPage } from "../last-bill/last-bill";
-import { ScanQrPage } from "../scan-qr/scan-qr";
+import {Component, OnInit, ViewChild} from "@angular/core";
+import {AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireDatabase, DatabaseSnapshot} from 'angularfire2/database';
+import {Chart} from 'chart.js';
+import {IonicPage, LoadingController, NavController, NavParams} from "ionic-angular";
+import {LastBillPage} from "../last-bill/last-bill";
+import {ScanQrPage} from "../scan-qr/scan-qr";
 
 @IonicPage()
 @Component({
@@ -16,19 +16,26 @@ export class HomePage implements OnInit {
     @ViewChild('doughnutCanvas') doughnutCanvas;
     doughnutChart: any;
     showChart: boolean = false;
-    user1: String = "Deshani Vimukthika";
     startDate: Date;
     dueDate: Date;
     sensorsAvailable = true;
     module;
     bills = [];
+    bill : any;
     private modules: any[];
     private moduleBill: any;
     private colors = [
-        "#FF6384",
-        "#36A2EB",
-        "#FFCE56",
-        "#CEFF56"
+        "#3498db",
+        "#f1c40f",
+        "#e74c3c",
+        "#2ecc71"
+
+    ];
+    private hoverColors = [
+        "#2980b9",
+        "#f39c12",
+        "#c0392b",
+        "#27ae60"
     ];
     doughnutData = {
         labels: [],
@@ -37,12 +44,7 @@ export class HomePage implements OnInit {
                 label: '# of Units',
                 data: [],
                 backgroundColor: this.colors,
-                hoverBackgroundColor: [
-                    "#b43f66",
-                    "#2b7ab4",
-                    "#b5933d",
-                    "#93b53d"
-                ]
+                hoverBackgroundColor: this.hoverColors
             }
         ]
     }
@@ -81,6 +83,8 @@ export class HomePage implements OnInit {
                             });
 
                     });
+                } else {
+                    this.loadData();
                 }
 
             });
@@ -149,7 +153,7 @@ export class HomePage implements OnInit {
     }
 
     private isHouseOwner() {
-        this.houseOwner = this.userType === 'HOUSE-OWNER'
+        this.houseOwner = this.userType === 'HOUSE-OWNER';
         return this.houseOwner;
     }
 
@@ -164,8 +168,8 @@ export class HomePage implements OnInit {
         this.loading = true;
         let colorI = 0;
         this.bills = [];
-        this.doughnutData.labels = []
-        this.doughnutData.datasets[0].data = []
+        this.doughnutData.labels = [];
+        this.doughnutData.datasets[0].data = [];
         this.angularFireDatabase.database.ref('modules/' + this.module.key + '/bills').orderByChild('current')
             .equalTo(true).limitToFirst(1)
             .once('value')
@@ -199,20 +203,20 @@ export class HomePage implements OnInit {
                                                 const bill = e.val();
                                                 usersSensor.forEach((userSnapshot: DatabaseSnapshot) => {
                                                     bill.user = userSnapshot.val();
-                                                    this.doughnutData.labels.push(bill.user.displayName);
+                                                    this.doughnutData.labels.push(bill.user.displayName == undefined ? 'No Name' : bill.user.displayName);
                                                     this.doughnutData.datasets[0].data.push(this.precisionRound(bill.wattHours / 1000, 3));
                                                     return true;
                                                 });
                                                 bill.color = this.colors[colorI++];
                                                 this.bills.push(bill);
-                                                this.loadingIndicator.dismiss()
+                                                this.loadingIndicator.dismiss();
                                                 this.drawDoughnutChart();
                                                 if (refresher) {
                                                     refresher.complete()
                                                 }
                                             })
                                             .catch(() => {
-                                                this.loadingIndicator.dismiss()
+                                                this.loadingIndicator.dismiss();
                                                 if (refresher) {
                                                     refresher.complete()
                                                 }
@@ -221,7 +225,7 @@ export class HomePage implements OnInit {
                                         return true;
                                     });
                                 } else {
-                                    this.loadingIndicator.dismiss()
+                                    this.loadingIndicator.dismiss();
                                     if (refresher) {
                                         refresher.complete()
                                     }
@@ -237,5 +241,21 @@ export class HomePage implements OnInit {
     }
 
     private loadTenantView(refresher?) {
+        this.loading = false;
+        this.loadingIndicator.dismiss();
+
+        this.angularFireDatabase.database.ref('users/' + this.angularFireAuth.auth.currentUser.uid + '/sensorId').once('value')
+            .then((sensor) => {
+                this.angularFireDatabase.database.ref('sensors/' + sensor.val() + '/bills').orderByChild('current').equalTo(true).limitToFirst(1).once('value')
+                    .then((billSnapshot) => {
+                        let bill = billSnapshot.val();
+                        let key = Object.keys(bill);
+                        this.bill = bill[key[0]];
+                        console.log(this.bill);
+                    })
+            }).catch((err) => {
+                console.log(err);
+            }
+        )
     }
 }

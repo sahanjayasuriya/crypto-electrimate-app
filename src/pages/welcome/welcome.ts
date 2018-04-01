@@ -77,7 +77,7 @@ export class WelcomePage {
     ionViewWillLoad() {
         this.presentLoading();
         this.angularFireAuth.authState.subscribe(data => {
-            if (data && data.uid && data.emailVerified) {
+            if (data && data.uid) {
                 this.navCtrl.setRoot(HomePage);
                 this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now())
             }

@@ -11,6 +11,7 @@ import {SettingsPage} from "../pages/settings/settings";
 import {User} from "../model/user";
 import {AngularFireAuth} from "angularfire2/auth";
 import {EulaPage} from "../pages/eula/eula";
+import {AngularFireDatabase} from "angularfire2/database";
 
 @Component({
     templateUrl: 'app.html'
@@ -31,6 +32,7 @@ export class MyApp {
                 private splashScreen: SplashScreen,
                 private events: Events,
                 private angularFireAuth: AngularFireAuth,
+                private angularFireDatabase: AngularFireDatabase,
                 public alertCtrl: AlertController) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
@@ -45,7 +47,28 @@ export class MyApp {
             this.user.displayName = user.displayName;
             this.user.photoURL = user.photoURL;
             this.user.phoneNumber = user.phoneNumber;
-            console.log(user);
+
+            this.angularFireDatabase.database.ref('users/' + user.uid + '/userType').once('value')
+                .then((userType) => {
+                    console.log(userType.val());
+                    if('HOUSE_OWNER' == userType.val()){
+                        this.pages = [
+                            {title: 'Home', component: HomePage, icon: 'home'},
+                            {title: 'Users', component: UsersPage, icon: 'contacts'},
+                            {title: 'Modules', component: ModulesPage, icon: 'outlet'},
+                            {title: 'Settings', component: SettingsPage, icon: 'settings'}
+                        ];
+                    } else if('ELECTRICITY_USER' == userType.val()){
+                        this.pages = [
+                            {title: 'Home', component: HomePage, icon: 'home'},
+                            {title: 'Settings', component: SettingsPage, icon: 'settings'}
+                        ];
+                    } else {
+                        this.pages = [];
+                    }
+                }).catch((err) => {
+
+            });
         });
 
         events.subscribe('user:updated', (user, time) => {
@@ -54,7 +77,6 @@ export class MyApp {
             this.user.displayName = this.currentUser.displayName;
             this.user.photoURL = this.currentUser.photoURL;
             this.user.phoneNumber = this.currentUser.phoneNumber;
-            console.log(this.currentUser);
         });
 
         this.pages = [
@@ -68,8 +90,6 @@ export class MyApp {
     }
 
     openPage(page) {
-        // Reset the content nav to have just this page
-        // we wouldn't want the back button to show in this scenario
         this.nav.setRoot(page.component);
         this.activePage = page;
     }

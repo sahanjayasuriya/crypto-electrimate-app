@@ -1,5 +1,4 @@
 <ion-header>
-
     <ion-navbar primary hideBackButton="true">
         <button class="header-button" ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
@@ -11,7 +10,6 @@
             </button>
         </ion-buttons>
     </ion-navbar>
-
 </ion-header>
 <ion-content padding>
     <ion-refresher (ionRefresh)="loadData($event)">
@@ -27,7 +25,7 @@
                 </ion-option>
             </ion-select>
         </ion-item>
-        <ion-row *ngIf="!sensorsAvailable">
+        <ion-row *ngIf="!sensorsAvailable && houseOwner">
             <ion-col col-12>
                 <h3 style="text-align: center">No sensors found</h3>
                 <button ion-button full color="danger" (click)="scanSensor()">
@@ -37,32 +35,51 @@
             </ion-col>
         </ion-row>
         <div [hidden]="loading">
-            <ion-row>
-                <h3 style="text-align: center">Usage Summary from {{moduleBill?.from|date:'mediumDate'}}</h3>
-                <canvas #doughnutCanvas></canvas>
-                <ion-card class="total-bill-card">
-                    <ion-card-header>Total Usage</ion-card-header>
-                    <ion-card-content>
-                        <ion-row>
-                            <ion-col col-6><b>{{(moduleBill?.wattHours|| 0)/1000|number}}<span>kWh</span></b></ion-col>
-                            <ion-col col-6><b><span>Rs. </span>{{(moduleBill?.amount||0)|number:'1.2-2'}}</b></ion-col>
-                        </ion-row>
-                    </ion-card-content>
-                </ion-card>
+            <ion-row style="margin-top: 10px">
+                <div *ngIf="houseOwner">
+                    <h3 style="text-align: center">Usage Summary from {{moduleBill?.from|date:'mediumDate'}}</h3>
+                    <canvas #doughnutCanvas></canvas>
+                    <ion-card class="total-bill-card">
+                        <ion-card-header style="text-align: center"><b>Total Usage</b></ion-card-header>
+                        <ion-card-content>
+                            <ion-row>
+                                <ion-col col-6><b>{{(moduleBill?.wattHours|| 0)/1000|number}}<span>kWh</span></b></ion-col>
+                                <ion-col col-6><b><span>Rs. </span>{{(moduleBill?.amount||0)|number:'1.2-2'}}</b></ion-col>
+                            </ion-row>
+                        </ion-card-content>
+                    </ion-card>
 
-                <ion-card class="tenant-bill-card" [ngStyle]="{'background-color': bill.color}"
-                          *ngFor="let bill of bills">
-                    <ion-card-header>
-                        {{bill.user.displayName}}
-                    </ion-card-header>
-                    <ion-card-content>
-                        <ion-row>
-                            <ion-col col-6><b>{{(bill.wattHours||0)/1000|number}}<span>kWh</span></b></ion-col>
-                            <ion-col col-6><b><span>Rs. </span>{{(bill.amount||0)|number:'1.2-2'}}</b></ion-col>
-                        </ion-row>
-                    </ion-card-content>
-                </ion-card>
-
+                    <ion-card class="tenant-bill-card" [ngStyle]="{'background-color': bill.color}"
+                              *ngFor="let bill of bills">
+                        <ion-card-header style="text-align: center">
+                            <b>{{bill.user.displayName == undefined? 'No Name' : bill.user.displayName}}</b>
+                        </ion-card-header>
+                        <ion-card-content>
+                            <ion-row>
+                                <ion-col col-6><b>{{(bill.wattHours||0)/1000|number}}<span>kWh</span></b></ion-col>
+                                <ion-col col-6><b><span>Rs. </span>{{(bill.amount||0)|number:'1.2-2'}}</b></ion-col>
+                            </ion-row>
+                        </ion-card-content>
+                    </ion-card>
+                </div>
+                <div *ngIf="!houseOwner">
+                    <h3 style="text-align: center">Usage Summary from {{bill?.from|date:'mediumDate'}}</h3>
+                    <ion-card class="tenant-bill-card">
+                        <img src="assets/img/tenant-header.png"/>
+                        <ion-card-content>
+                            <ion-row>
+                                <ion-col col-6>
+                                    <h1><ion-icon name="bulb"></ion-icon></h1>
+                                    <h1>{{(bill?.wattHours|| 0)/1000|number}}<span>&nbsp;kWh</span></h1>
+                                </ion-col>
+                                <ion-col col-6>
+                                    <h1><ion-icon name="cash"></ion-icon></h1>
+                                    <h1><span>Rs. </span>{{(bill?.amount||0)|number:'1.2-2'}}</h1>
+                                </ion-col>
+                            </ion-row>
+                        </ion-card-content>
+                    </ion-card>
+                </div>
                 <button ion-button full color="primary" (click)="showHistory()">
                     <ion-icon name="clock"></ion-icon>
                     &nbsp;View History
