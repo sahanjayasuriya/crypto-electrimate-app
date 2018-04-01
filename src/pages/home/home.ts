@@ -21,7 +21,7 @@ export class HomePage implements OnInit {
     sensorsAvailable = true;
     module;
     bills = [];
-    bill : any;
+    bill: any;
     private modules: any[];
     private moduleBill: any;
     private colors = [
@@ -251,10 +251,15 @@ export class HomePage implements OnInit {
                         let bill = billSnapshot.val();
                         let key = Object.keys(bill);
                         this.bill = bill[key[0]];
-                        console.log(this.bill);
+                        if (refresher) {
+                            refresher.complete()
+                        }
                     })
             }).catch((err) => {
                 console.log(err);
+                if (refresher) {
+                    refresher.complete()
+                }
             }
         )
     }
