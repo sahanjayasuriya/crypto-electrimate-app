@@ -51,14 +51,14 @@ export class MyApp {
             this.angularFireDatabase.database.ref('users/' + user.uid + '/userType').once('value')
                 .then((userType) => {
                     console.log(userType.val());
-                    if('HOUSE_OWNER' == userType.val()){
+                    if('HOUSE-OWNER' == userType.val()){
                         this.pages = [
                             {title: 'Home', component: HomePage, icon: 'home'},
                             {title: 'Users', component: UsersPage, icon: 'contacts'},
                             {title: 'Modules', component: ModulesPage, icon: 'outlet'},
                             {title: 'Settings', component: SettingsPage, icon: 'settings'}
                         ];
-                    } else if('ELECTRICITY_USER' == userType.val()){
+                    } else if('ELECTRICITY-USER' == userType.val()){
                         this.pages = [
                             {title: 'Home', component: HomePage, icon: 'home'},
                             {title: 'Settings', component: SettingsPage, icon: 'settings'}

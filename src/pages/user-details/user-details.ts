@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {SettlePaymentPage} from "../settle-payment/settle-payment";
 import {AngularFireAuth} from "angularfire2/auth";
 import {AngularFireDatabase} from "angularfire2/database";
-import {errorHandler} from "@angular/platform-browser/src/browser";
 import {User} from "../../model/user";
+import {SMS} from "@ionic-native/sms";
+import {CallNumber} from "@ionic-native/call-number";
 
 @IonicPage()
 @Component({
@@ -17,42 +18,38 @@ export class UserDetailsPage {
                 public navParams: NavParams,
                 private angularFireAuth: AngularFireAuth,
                 private angularFireDatabase: AngularFireDatabase,
-                private toastCtrl: ToastController,
-                public modalCtrl: ModalController) {
+                public modalCtrl: ModalController,
+                private call: CallNumber,
+                private sms: SMS) {
     }
 
-    name: string;
-    image: string;
-    settle: string;
-    joined: string;
-
-    userId:string;
-    user:User = new User();
+    userId: string;
+    user: User = new User();
 
     ionViewDidLoad() {
-        this.name = this.navParams.get('name');
-        this.image = this.navParams.get('image');
-        this.settle = this.navParams.get('settle');
-        this.joined = this.navParams.get('joined');
         this.userId = this.navParams.get('userId');
-
         this.angularFireDatabase.database.ref('/users/' + this.userId).once('value')
-            .then((data)=>{
-                this.user.displayName = data.val().displayName;
-                this.user.email = data.val().email;
-                this.user.phoneNumber = data.val().phoneNumber;
-                this.user.photoURL = data.val().photoURL;
-        }, (error)=>{
-
-        });
-
-
-
+            .then((data) => {
+                this.user = data.val();
+            }, (error) => {
+                console.log(error);
+            });
     }
 
     openSettleModal() {
         let modal = this.modalCtrl.create(SettlePaymentPage);
         modal.present();
+    }
+
+    callUser() {
+        this.call.callNumber(this.user.phoneNumber, false);
+    }
+
+    smsUser() {
+        this.sms.send(this.user.phoneNumber, '\n - Sent from Electrimate App', {
+            replaceLineBreaks: true,
+            android: {intent: 'INTENT'}
+        });
     }
 
 }

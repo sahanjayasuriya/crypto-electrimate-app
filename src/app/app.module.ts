@@ -52,6 +52,8 @@ import {EulaAgreementPageModule} from "../pages/eula-agreement/eula-agreement.mo
 import {EulaAgreementPage} from "../pages/eula-agreement/eula-agreement";
 import {LastBillPage} from "../pages/last-bill/last-bill";
 import {LastBillPageModule} from "../pages/last-bill/last-bill.module";
+import {CallNumber} from "@ionic-native/call-number";
+import {SMS} from "@ionic-native/sms";
 
 @NgModule({
     declarations: [
@@ -114,7 +116,9 @@ import {LastBillPageModule} from "../pages/last-bill/last-bill.module";
         AngularFireDatabase,
         // Keep this to enable Ionic's runtime error handling during development
         {provide: ErrorHandler, useClass: IonicErrorHandler},
-        Storage
+        Storage,
+        CallNumber,
+        SMS
     ]
 })
 export class AppModule {

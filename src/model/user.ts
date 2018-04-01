@@ -4,4 +4,5 @@ export class User {
     displayName: string;
     phoneNumber: string;
     photoURL: string;
+    created: string;
 }
