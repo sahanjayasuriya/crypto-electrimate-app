@@ -29,7 +29,8 @@ export class LastBillPage implements OnInit {
                 private toastCtrl: ToastController) {
         const now = new Date();
         const month = now.getMonth() + 1
-        this.maxDate = now.getFullYear() + '-' + (month < 10 ? '0' + month : month) + '-' + now.getDate();
+        const date = now.getDate()
+        this.maxDate = now.getFullYear() + '-' + (month < 10 ? '0' + month : month) + '-' + (date < 10 ? '0' + date : date);
         console.log(this.maxDate);
     }
 
