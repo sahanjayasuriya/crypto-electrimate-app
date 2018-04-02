@@ -169,7 +169,7 @@ export class HomePage implements OnInit {
         this.bills = [];
         this.doughnutData.labels = [];
         this.doughnutData.datasets[0].data = [];
-        //get modules from firebase
+        //get latest bill object of the module
         this.angularFireDatabase.database.ref('modules/' + this.module.key + '/bills').orderByChild('current')
             .equalTo(true).limitToFirst(1)
             .once('value')
@@ -190,12 +190,14 @@ export class HomePage implements OnInit {
                     console.log(sensorsSnapshot.val());
                     sensorsSnapshot.val().forEach((sensor) => {
                         console.log(sensor);
+                        //get latest bill of the sensor
                         this.angularFireDatabase.database.ref('sensors/' + sensor.sensorId + '/bills')
                             .orderByChild('current').equalTo(true).limitToFirst(1)
                             .once('value')
                             .then((billSnapshot: DatabaseSnapshot) => {
                                 if (billSnapshot.hasChildren()) {
                                     billSnapshot.forEach(e => {
+                                        //get user by sensor id
                                         this.angularFireDatabase.database.ref('users').orderByChild('sensorId')
                                             .equalTo(sensor.sensorId)
                                             .limitToFirst(1)
@@ -246,6 +248,7 @@ export class HomePage implements OnInit {
         this.loading = false;
         this.loadingIndicator.dismiss();
 
+        //gwt sensors by user id
         this.angularFireDatabase.database.ref('users/' + this.angularFireAuth.auth.currentUser.uid + '/sensorId').once('value')
             .then((sensor) => {
                 this.angularFireDatabase.database.ref('sensors/' + sensor.val() + '/bills')
