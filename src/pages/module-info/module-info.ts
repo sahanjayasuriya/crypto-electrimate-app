@@ -4,13 +4,6 @@ import {SensorsPage} from "../sensors/sensors";
 import {AngularFireAuth} from "angularfire2/auth";
 import {AngularFireDatabase} from "angularfire2/database";
 
-/**
- * Generated class for the ModuleInfoPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
     selector: 'page-module-info',
@@ -31,6 +24,7 @@ export class ModuleInfoPage {
                 private toastCtrl: ToastController) {
     }
 
+    //function, on page loading
     ionViewDidLoad() {
         this.moduleId = this.navParams.get("moduleId");
         this.angularFireDatabase.database.ref('/modules/' + this.moduleId).once('value')
@@ -49,6 +43,7 @@ export class ModuleInfoPage {
 
     }
 
+    //function, redirect to sensors page
     viewSensors() {
         this.navCtrl.push(SensorsPage, {'sensorList': this.sensorList});
     }

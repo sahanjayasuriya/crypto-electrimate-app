@@ -5,20 +5,12 @@ import {AngularFireDatabase} from "angularfire2/database";
 import {ModuleInfoPage} from "../module-info/module-info";
 import {LastBillPage} from "../last-bill/last-bill";
 
-/**
- * Generated class for the ModulesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
     selector: 'page-modules',
     templateUrl: 'modules.html',
 })
 export class ModulesPage {
-
 
     moduleId: string;
     userId: string;
@@ -34,6 +26,7 @@ export class ModulesPage {
                 public loadingCtrl: LoadingController) {
     }
 
+    //function, call on page loading
     ionViewDidLoad() {
         this.presentLoading();
         this.userId = this.angularFireAuth.auth.currentUser.uid;
@@ -53,10 +46,12 @@ export class ModulesPage {
             });
     }
 
+    //function, redirect into module detail page
     viewModule(moduleId: string) {
         this.navCtrl.push(ModuleInfoPage, {'moduleId': this.moduleId});
     }
 
+    //function, display loading
     presentLoading() {
         this.loading = this.loadingCtrl.create({
             content: 'Loading...'
@@ -64,7 +59,4 @@ export class ModulesPage {
         this.loading.present();
     }
 
-    viewBillDate() {
-        this.navCtrl.push(LastBillPage);
-    }
 }

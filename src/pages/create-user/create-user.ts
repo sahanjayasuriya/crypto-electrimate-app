@@ -1,16 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from "angularfire2/auth";
-import { AngularFireDatabase } from "angularfire2/database";
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
-import { ElectricityUser } from "../../model/electricity-user";
-import { HomePage } from "../home/home";
-
-/**
- * Generated class for the CreateUserPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {Component, OnInit} from '@angular/core';
+import {AngularFireAuth} from "angularfire2/auth";
+import {AngularFireDatabase} from "angularfire2/database";
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {ElectricityUser} from "../../model/electricity-user";
+import {HomePage} from "../home/home";
 
 @IonicPage()
 @Component({
@@ -31,6 +24,7 @@ export class CreateUserPage implements OnInit {
                 private toastCtrl: ToastController) {
     }
 
+    //function, on page loading
     ngOnInit() {
         this.user = new ElectricityUser();
         this.user.sensorId = this.navParams.get('sensorId');
@@ -56,15 +50,16 @@ export class CreateUserPage implements OnInit {
         })
     }
 
+    //function, save user to firebase
     saveUser() {
         var sensors = [];
         let date: any = new Date();
         let year: string = date.getFullYear();
         let month: string = (date.getMonth() + 1) < 9 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
         let day: string = date.getDate();
+        //create user on firebase
         this.angularFireAuth.auth.createUserWithEmailAndPassword(this.user.email, this.defaultPassword)
             .then((data) => {
-                console.log(data);
                 this.angularFireDatabase.database.ref('users/' + data.uid).set({
                     email: data.email,
                     displayName: data.displayName,
@@ -94,7 +89,7 @@ export class CreateUserPage implements OnInit {
                         .catch((err) => {
                             this.presentToast("Error occurred while saving");
                         });
-
+                    //calling firebase and getting sensors list
                     this.angularFireDatabase.database.ref('modules/' + this.user.moduleId + '/sensors')
                         .once('value').then((data) => {
                         if (data.val() != null) {
@@ -102,6 +97,7 @@ export class CreateUserPage implements OnInit {
                         }
                         const sensorObj = {sensorId: this.user.sensorId, pin: this.user.connectedPin};
                         sensors.push(sensorObj);
+                        //add sensors to user profile
                         this.angularFireDatabase.database.ref('modules/' + this.user.moduleId + '/sensors').set(
                             sensors
                         ).then(() => {
@@ -118,6 +114,7 @@ export class CreateUserPage implements OnInit {
         })
     }
 
+    //function, display loading
     private presentToast(text) {
         let toast = this.toastCtrl.create({
             message: text,

@@ -1,3 +1,4 @@
+//user model
 export class User {
     email: string;
     password: string;

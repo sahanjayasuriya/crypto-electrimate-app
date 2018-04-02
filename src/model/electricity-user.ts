@@ -1,3 +1,4 @@
+//electricity user model
 export class ElectricityUser {
     email: string;
     password: string;

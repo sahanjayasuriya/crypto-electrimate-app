@@ -24,6 +24,7 @@ export class EulaPage implements OnInit {
         };
     }
 
+    //function, when eula completes user redirects into welcome(login) page
     complete() {
         if (!this.options.showEula) {
             this.storage.set('showEula', 0).then(() => {
@@ -33,6 +34,7 @@ export class EulaPage implements OnInit {
         this.navCtrl.setRoot(WelcomePage);
     }
 
+    //function, page on loading function
     ngOnInit() {
         this.presentLoading();
         this.storage.get('showEula').then((value) => {
@@ -48,6 +50,7 @@ export class EulaPage implements OnInit {
         });
     }
 
+    //function, display loading message
     presentLoading() {
         this.loading = this.loadingCtrl.create({
             content: 'Loading...'
@@ -55,11 +58,13 @@ export class EulaPage implements OnInit {
         this.loading.present();
     }
 
+    //function, display eula
     showEula() {
         let eulaModel = this.modalCtrl.create(EulaAgreementPage);
         eulaModel.present();
     }
 
+    //function, exit from app
     exit() {
         this.platform.exitApp();
     }

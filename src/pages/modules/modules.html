@@ -1,5 +1,5 @@
+<!--Module list page - content -->
 <ion-header>
-
     <ion-navbar primary hideBackButton="true">
         <button class="header-button" ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
@@ -8,8 +8,6 @@
     </ion-navbar>
 
 </ion-header>
-
-
 <ion-content padding>
     <ion-list>
         <ion-item *ngFor="let module of moduleList" (click)="viewModule(module.id)">

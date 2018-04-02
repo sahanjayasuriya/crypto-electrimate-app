@@ -1,3 +1,4 @@
+//firebase configuration
 export const FIREBASE_CONFIG = {
     apiKey: "AIzaSyAEhfekDFXXKGR-N_HHgB8lsSbHvqU5TrM",
     authDomain: "electrimate-dev.firebaseapp.com",

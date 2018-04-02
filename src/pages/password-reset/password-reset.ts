@@ -3,12 +3,6 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {AngularFireAuth} from "angularfire2/auth";
 import {WelcomePage} from "../welcome/welcome";
 
-/**
- * Generated class for the PasswordResetPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -19,14 +13,20 @@ export class PasswordResetPage {
 
     email: string = '';
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private angularFireAuth: AngularFireAuth, private alertCtrl: AlertController) {
+    constructor(public navCtrl: NavController,
+                public navParams: NavParams,
+                private angularFireAuth: AngularFireAuth,
+                private alertCtrl: AlertController) {
     }
 
+    //function, on page loading
     ionViewWillLoad() {
         console.log("View Loaded");
     }
 
+    //function, reset password
     resetPwd() {
+        //send verification mail to user
         this.angularFireAuth.auth.sendPasswordResetEmail(this.email)
             .then((data) => {
                 let success = this.alertCtrl.create({

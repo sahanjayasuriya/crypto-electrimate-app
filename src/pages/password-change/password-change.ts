@@ -4,13 +4,6 @@ import {AngularFireAuth} from "angularfire2/auth";
 import * as firebase from "firebase/app";
 import {WelcomePage} from "../welcome/welcome";
 
-/**
- * Generated class for the PasswordChangePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
     selector: 'page-password-change',
@@ -22,17 +15,25 @@ export class PasswordChangePage {
     newPassword: string;
     repeatNewPassword: string;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private angularFireAuth: AngularFireAuth, private toastCtrl: ToastController, private alertCtrl: AlertController) {
+    constructor(public navCtrl: NavController,
+                public navParams: NavParams,
+                private angularFireAuth: AngularFireAuth,
+                private toastCtrl: ToastController,
+                private alertCtrl: AlertController) {
     }
 
+    //function, on page loading
     ionViewDidLoad() {
         console.log('ionViewDidLoad PasswordChangePage');
     }
 
+    //function, change password
     changePasswordClicked() {
         if (this.newPassword === this.repeatNewPassword) {
+            //authenticating current password
             this.angularFireAuth.auth.currentUser.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(this.angularFireAuth.auth.currentUser.email, this.currentPassword))
                 .then((data) => {
+                    //update password with firebase
                     this.angularFireAuth.auth.currentUser.updatePassword(this.newPassword)
                     let success = this.alertCtrl.create({
                         title: 'Password Changed',
@@ -58,6 +59,7 @@ export class PasswordChangePage {
 
     }
 
+    //function,display loading
     private presentToast(text) {
         let toast = this.toastCtrl.create({
             message: text,

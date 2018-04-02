@@ -1,14 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase, DatabaseSnapshot } from 'angularfire2/database';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
-
-/**
- * Generated class for the LastBillPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {Component, OnInit} from '@angular/core';
+import {AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireDatabase, DatabaseSnapshot} from 'angularfire2/database';
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -34,6 +27,7 @@ export class LastBillPage implements OnInit {
         console.log(this.maxDate);
     }
 
+    //page on loading function
     ngOnInit(): void {
         const userId = this.angularFireAuth.auth.currentUser.uid;
         this.angularFireDatabase.database.ref('users/' + userId + '/modules').once('value')
@@ -53,10 +47,12 @@ export class LastBillPage implements OnInit {
             })
     }
 
+    //fuction, call on page loading
     ionViewDidLoad() {
         console.log('ionViewDidLoad LastBillPage');
     }
 
+    //function, update bills
     save() {
         if (this.module && this.lastBillDate) {
             console.log(this.module.key);

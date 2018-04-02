@@ -1,3 +1,4 @@
+<!--Home page - content -->
 <ion-header>
     <ion-navbar primary hideBackButton="true">
         <button class="header-button" ion-button menuToggle>
@@ -16,6 +17,7 @@
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-grid>
+        <!--load view if user type is house owner -->
         <ion-item *ngIf="houseOwner">
             <ion-label>Select the Module</ion-label>
             <ion-select [(ngModel)]="module" (ionChange)="loadData()">
@@ -43,8 +45,10 @@
                         <ion-card-header style="text-align: center"><b>Total Usage</b></ion-card-header>
                         <ion-card-content>
                             <ion-row>
-                                <ion-col col-6><b>{{(moduleBill?.wattHours|| 0)/1000|number}}<span>kWh</span></b></ion-col>
-                                <ion-col col-6><b><span>Rs. </span>{{(moduleBill?.amount||0)|number:'1.2-2'}}</b></ion-col>
+                                <ion-col col-6><b>{{(moduleBill?.wattHours|| 0)/1000|number}}<span>kWh</span></b>
+                                </ion-col>
+                                <ion-col col-6><b><span>Rs. </span>{{(moduleBill?.amount||0)|number:'1.2-2'}}</b>
+                                </ion-col>
                             </ion-row>
                         </ion-card-content>
                     </ion-card>
@@ -62,6 +66,7 @@
                         </ion-card-content>
                     </ion-card>
                 </div>
+                <!--load view if user type is not house owner/tenant -->
                 <div *ngIf="!houseOwner">
                     <h3 style="text-align: center">Usage Summary from {{bill?.from|date:'mediumDate'}}</h3>
                     <ion-card class="tenant-bill-card">
@@ -69,11 +74,15 @@
                         <ion-card-content>
                             <ion-row>
                                 <ion-col col-6>
-                                    <h1><ion-icon name="bulb"></ion-icon></h1>
+                                    <h1>
+                                        <ion-icon name="bulb"></ion-icon>
+                                    </h1>
                                     <h1>{{(bill?.wattHours|| 0)/1000|number}}<span>&nbsp;kWh</span></h1>
                                 </ion-col>
                                 <ion-col col-6>
-                                    <h1><ion-icon name="cash"></ion-icon></h1>
+                                    <h1>
+                                        <ion-icon name="cash"></ion-icon>
+                                    </h1>
                                     <h1><span>Rs. </span>{{(bill?.amount||0)|number:'1.2-2'}}</h1>
                                 </ion-col>
                             </ion-row>

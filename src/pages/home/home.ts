@@ -15,9 +15,6 @@ export class HomePage implements OnInit {
 
     @ViewChild('doughnutCanvas') doughnutCanvas;
     doughnutChart: any;
-    showChart: boolean = false;
-    startDate: Date;
-    dueDate: Date;
     sensorsAvailable = true;
     module;
     bills = [];
@@ -59,6 +56,7 @@ export class HomePage implements OnInit {
                 private loadingCtrl: LoadingController) {
     }
 
+    //page on loading function
     ngOnInit() {
         this.presentLoading();
         const userId = this.angularFireAuth.auth.currentUser.uid;
@@ -90,19 +88,7 @@ export class HomePage implements OnInit {
             });
     }
 
-    ngAfterViewInit() {
-
-    }
-
-
-    checkUsage(startDate, dueDate) {
-        this.startDate = startDate;
-        this.dueDate = dueDate;
-        this.showChart = true;
-        console.log("+++++" + dueDate);
-        this.ngAfterViewInit()
-    }
-
+    //function redirect to scan qr page
     scanSensor() {
         this.navCtrl.push(ScanQrPage);
     }
@@ -111,10 +97,12 @@ export class HomePage implements OnInit {
 
     }
 
+    //function redirect to last bill page
     viewBillDate() {
         this.navCtrl.push(LastBillPage);
     }
 
+    //function, load data on refresh and page loading
     loadData(refresher?) {
         if (this.isHouseOwner()) {
             this.loadHouseOwnerView(refresher)
@@ -123,17 +111,20 @@ export class HomePage implements OnInit {
         }
     }
 
+    //function,getting the date object
     getDate(date) {
         if (!date || date instanceof String) date = new Date(date || '');
         return
 
     }
 
+    //function,number formatting
     precisionRound(number, precision) {
         var factor = Math.pow(10, precision);
         return Math.round(number * factor) / factor;
     }
 
+    //function, drawing doughnut chart
     private drawDoughnutChart() {
         console.log(this.doughnutData);
         this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
@@ -152,11 +143,13 @@ export class HomePage implements OnInit {
         });
     }
 
+    //function, check user type
     private isHouseOwner() {
         this.houseOwner = this.userType === 'HOUSE-OWNER';
         return this.houseOwner;
     }
 
+    //function, display loading window
     presentLoading() {
         this.loadingIndicator = this.loadingCtrl.create({
             content: 'Loading...'
@@ -164,12 +157,14 @@ export class HomePage implements OnInit {
         this.loadingIndicator.present();
     }
 
+    //function, load house owner view
     private loadHouseOwnerView(refresher?) {
         this.loading = true;
         let colorI = 0;
         this.bills = [];
         this.doughnutData.labels = [];
         this.doughnutData.datasets[0].data = [];
+        //get modules from firebase
         this.angularFireDatabase.database.ref('modules/' + this.module.key + '/bills').orderByChild('current')
             .equalTo(true).limitToFirst(1)
             .once('value')
@@ -179,6 +174,7 @@ export class HomePage implements OnInit {
                     return true;
                 });
             });
+        //get sensors from firebase
         this.angularFireDatabase.database.ref('modules/' + this.module.key + '/sensors')
             .once('value')
             .then((sensorsSnapshot: DatabaseSnapshot) => {
@@ -240,6 +236,7 @@ export class HomePage implements OnInit {
             })
     }
 
+    //function, load tenantive view
     private loadTenantView(refresher?) {
         this.loading = false;
         this.loadingIndicator.dismiss();
