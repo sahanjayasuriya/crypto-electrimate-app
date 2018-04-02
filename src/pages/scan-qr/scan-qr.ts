@@ -1,8 +1,8 @@
-import {BarcodeScanner} from "@ionic-native/barcode-scanner";
-import {Component} from "@angular/core";
-import {AlertController, IonicPage, NavController, NavParams} from "ionic-angular";
-import {CreateUserPage} from "../create-user/create-user";
-import {AngularFireDatabase} from "angularfire2/database";
+import { Component } from "@angular/core";
+import { BarcodeScanner } from "@ionic-native/barcode-scanner";
+import { AngularFireDatabase } from "angularfire2/database";
+import { AlertController, IonicPage, NavController, NavParams } from "ionic-angular";
+import { CreateUserPage } from "../create-user/create-user";
 
 @IonicPage()
 @Component({
@@ -22,18 +22,19 @@ export class ScanQrPage {
     //function, scan sensor qr code
     scanCode() {
         this.barcodeScanner.scan().then(barcodeData => {
-            console.log(barcodeData);
-            this.sensorId = barcodeData.text;
-            this.angularFireDatabase.database.ref('/sensors/' + this.sensorId).once('value')
-                .then((data) => {
-                    if (null != data.val()) {
-                        this.showConfirm();
-                    } else {
+            if (!barcodeData.cancelled) {
+                this.sensorId = barcodeData.text;
+                this.angularFireDatabase.database.ref('/sensors/' + this.sensorId).once('value')
+                    .then((data) => {
+                        if (data.val()) {
+                            this.showConfirm();
+                        } else {
+                            this.showError();
+                        }
+                    }, (error) => {
                         this.showError();
-                    }
-                }, (error) => {
-                    this.showError();
-                });
+                    });
+            }
         })
     }
 

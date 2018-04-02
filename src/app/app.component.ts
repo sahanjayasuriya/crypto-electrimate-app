@@ -1,17 +1,17 @@
-import {Component, ViewChild} from '@angular/core';
-import {SplashScreen} from '@ionic-native/splash-screen';
-import {StatusBar} from '@ionic-native/status-bar';
-import {AlertController, Events, Nav, Platform} from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { AngularFireAuth } from "angularfire2/auth";
+import { AngularFireDatabase } from "angularfire2/database";
+import { AlertController, Events, Nav, Platform } from 'ionic-angular';
+import { User } from "../model/user";
+import { EulaPage } from "../pages/eula/eula";
 
-import {HomePage} from "../pages/home/home";
-import {WelcomePage} from "../pages/welcome/welcome";
-import {UsersPage} from "../pages/users/users";
-import {ModulesPage} from "../pages/modules/modules";
-import {SettingsPage} from "../pages/settings/settings";
-import {User} from "../model/user";
-import {AngularFireAuth} from "angularfire2/auth";
-import {EulaPage} from "../pages/eula/eula";
-import {AngularFireDatabase} from "angularfire2/database";
+import { HomePage } from "../pages/home/home";
+import { ModulesPage } from "../pages/modules/modules";
+import { SettingsPage } from "../pages/settings/settings";
+import { UsersPage } from "../pages/users/users";
+import { WelcomePage } from "../pages/welcome/welcome";
 
 @Component({
     templateUrl: 'app.html'
@@ -69,6 +69,7 @@ export class MyApp {
                     } else {
                         this.pages = [];
                     }
+                    this.activePage = this.pages[0]; //Setting the active page as the first object in the pages array
                 }).catch((err) => {
                 console.log(err); //Logging if any error occurred
             });
@@ -84,7 +85,6 @@ export class MyApp {
             this.user.phoneNumber = this.currentUser.phoneNumber;
         });
 
-        this.activePage = this.pages[0]; //Setting the active page as the first object in the pages array
     }
 
     //Function to open the specific page when a menu item is touched
