@@ -1,16 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from "angularfire2/auth";
-import { AngularFireDatabase } from "angularfire2/database";
-import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
-import { LastBillPage } from "../last-bill/last-bill";
-import { UserDetailsPage } from "../user-details/user-details";
-
-/**
- * Generated class for the UsersPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {Component, OnInit} from '@angular/core';
+import {AngularFireAuth} from "angularfire2/auth";
+import {AngularFireDatabase} from "angularfire2/database";
+import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {LastBillPage} from "../last-bill/last-bill";
+import {UserDetailsPage} from "../user-details/user-details";
 
 @IonicPage()
 @Component({
@@ -32,11 +25,14 @@ export class UsersPage implements OnInit {
                 public loadingCtrl: LoadingController) {
     }
 
+    //function, on page loading
     ngOnInit() {
         this.presentLoading();
         this.userId = this.angularFireAuth.auth.currentUser.uid;
+        //load modules from firebase
         this.angularFireDatabase.database.ref('users/' + this.userId + '/modules').once('value')
             .then((modules) => {
+                //load sensors from firebase
                 this.angularFireDatabase.database.ref('modules/' + modules.val()[0] + '/sensors/').once('value')
                     .then((sensors) => {
                         this.sensors = sensors.val();
@@ -65,10 +61,12 @@ export class UsersPage implements OnInit {
         })
     }
 
+    //function, redirect to user details page
     viewUserDetails(id: string) {
         this.navCtrl.push(UserDetailsPage, {'userId': id});
     }
 
+    //function, loading window
     presentLoading() {
         this.loading = this.loadingCtrl.create({
             content: 'Loading...'
@@ -76,7 +74,4 @@ export class UsersPage implements OnInit {
         this.loading.present();
     }
 
-    viewBillDate() {
-        this.navCtrl.push(LastBillPage);
-    }
 }

@@ -17,13 +17,6 @@ import {AngularFireDatabase} from "angularfire2/database";
 import AuthCredential = firebase.auth.AuthCredential;
 import {HomePage} from "../home/home";
 
-/**
- * Generated class for the UserProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
     selector: 'page-user-profile',
@@ -31,7 +24,6 @@ import {HomePage} from "../home/home";
 })
 export class UserProfilePage {
     user: User = new User();
-    credential: AuthCredential;
     loading: any;
 
     constructor(public navCtrl: NavController,
@@ -46,6 +38,7 @@ export class UserProfilePage {
                 public loadingCtrl: LoadingController) {
     }
 
+    //function, on page loading
     ionViewWillLoad() {
         const currentUser = this.angularFireAuth.auth.currentUser;
         this.angularFireDatabase.database.ref('users/' + currentUser.uid).once('value')
@@ -65,6 +58,7 @@ export class UserProfilePage {
 
     }
 
+    //function, choose profile upload method
     public presentActionSheet() {
         let actionSheet = this.actionSheetCtrl.create({
             title: 'Select an Image',
@@ -94,6 +88,7 @@ export class UserProfilePage {
     }
 
 
+    //function, process tale picture method
     public takePicture(sourceType) {
         var options = {
             quality: 90,
@@ -122,6 +117,7 @@ export class UserProfilePage {
             });
     }
 
+    //function, update user details
     updateDetails() {
         this.angularFireAuth.auth.currentUser.updateProfile(
             {
@@ -143,6 +139,7 @@ export class UserProfilePage {
 
     }
 
+    //function, load notification
     private presentToast(text) {
         let toast = this.toastCtrl.create({
             message: text,
@@ -152,6 +149,7 @@ export class UserProfilePage {
         toast.present();
     }
 
+    //function, loading window
     presentLoading() {
         this.loading = this.loadingCtrl.create({
             content: 'Uploading...'

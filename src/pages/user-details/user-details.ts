@@ -26,6 +26,7 @@ export class UserDetailsPage {
     userId: string;
     user: User = new User();
 
+    //function, on page loading
     ionViewDidLoad() {
         this.userId = this.navParams.get('userId');
         this.angularFireDatabase.database.ref('/users/' + this.userId).once('value')
@@ -36,15 +37,12 @@ export class UserDetailsPage {
             });
     }
 
-    openSettleModal() {
-        let modal = this.modalCtrl.create(SettlePaymentPage);
-        modal.present();
-    }
-
+    //function, call user
     callUser() {
         this.call.callNumber(this.user.phoneNumber, false);
     }
 
+    //function, send message to user
     smsUser() {
         this.sms.send(this.user.phoneNumber, '\n - Sent from Electrimate App', {
             replaceLineBreaks: true,

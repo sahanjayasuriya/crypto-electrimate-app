@@ -20,6 +20,7 @@ export class SensorsPage {
 
     }
 
+    //function, on page loading
     ionViewDidLoad() {
         this.sensorList = this.navParams.get("sensorList");
         for (let sensor of this.sensorList) {
@@ -37,6 +38,7 @@ export class SensorsPage {
         }
     }
 
+    //function, redirect to scan qr page
     addSensor() {
         this.navCtrl.push(ScanQrPage);
     }

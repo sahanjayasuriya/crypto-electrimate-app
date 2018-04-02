@@ -3,7 +3,6 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {AngularFireAuth} from "angularfire2/auth";
 import {WelcomePage} from "../welcome/welcome";
 
-
 @IonicPage()
 @Component({
     selector: 'page-password-reset',
@@ -17,11 +16,6 @@ export class PasswordResetPage {
                 public navParams: NavParams,
                 private angularFireAuth: AngularFireAuth,
                 private alertCtrl: AlertController) {
-    }
-
-    //function, on page loading
-    ionViewWillLoad() {
-        console.log("View Loaded");
     }
 
     //function, reset password
@@ -58,5 +52,4 @@ export class PasswordResetPage {
             error.present();
         })
     }
-
 }

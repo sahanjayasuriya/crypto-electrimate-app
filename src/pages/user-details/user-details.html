@@ -1,9 +1,4 @@
-<!--
-  Generated template for the UserDetailsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
+<!-- User detail page - Content -->
 <ion-header>
 
     <ion-navbar>
@@ -11,7 +6,6 @@
     </ion-navbar>
 
 </ion-header>
-
 
 <ion-content padding>
     <ion-row>
@@ -35,6 +29,7 @@
             </ion-row>
         </ion-col>
     </ion-row>
+    <!--display if user has mobile number provided -->
     <ion-fab bottom right *ngIf="user.phoneNumber != null">
         <button ion-fab>
             <ion-icon name="contact"></ion-icon>

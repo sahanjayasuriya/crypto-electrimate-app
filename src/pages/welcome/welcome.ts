@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { AngularFireAuth } from "angularfire2/auth";
-import { AngularFireDatabase } from "angularfire2/database";
-import { AlertController, Events, IonicPage, LoadingController, NavController, ToastController } from 'ionic-angular';
-import { User } from "../../model/user";
-import { HomePage } from "../home/home";
-import { PasswordResetPage } from "../password-reset/password-reset";
-import { UserProfilePage } from "../user-profile/user-profile";
+import {Component} from '@angular/core';
+import {AngularFireAuth} from "angularfire2/auth";
+import {AngularFireDatabase} from "angularfire2/database";
+import {AlertController, Events, IonicPage, LoadingController, NavController, ToastController} from 'ionic-angular';
+import {User} from "../../model/user";
+import {HomePage} from "../home/home";
+import {PasswordResetPage} from "../password-reset/password-reset";
+import {UserProfilePage} from "../user-profile/user-profile";
 
 @IonicPage()
 @Component({
@@ -26,21 +26,25 @@ export class WelcomePage {
                 private alertCtrl: AlertController) {
     }
 
+    //function, verify user credentials and redirect to home page
     doLogin() {
         this.presentLoading();
+        //send email and password to firebase signIn API
         this.angularFireAuth.auth.signInWithEmailAndPassword(this.user.email, this.user.password)
             .then((result) => {
+                //getting the user from firebase database
                 this.angularFireDatabase.database.ref('users/' + result.uid).once('value')
                     .then((data) => {
-                        if (data.val().userType == 'HOUSE-OWNER') {
-                            if (result.emailVerified) {
+                        if (data.val().userType == 'HOUSE-OWNER') { //checking the user type
+                            if (result.emailVerified) { //checking if the email is verified
+                                //publishing the user logged event
                                 this.events.publish('user:logged', this.angularFireAuth.auth.currentUser, Date.now());
                                 this.presentToast("Logged in successfully");
-                                if (data.val().firstLogin) {
+                                if (data.val().firstLogin) { // if the first login, show edit profile page
                                     this.showEditProfile();
                                     this.setFirstLogin();
                                 } else {
-                                    this.navCtrl.setRoot(HomePage);
+                                    this.navCtrl.setRoot(HomePage); // set root page as home page
                                 }
                             } else {
                                 this.presentToast("Email not verified. Please verify the email to continue.");
@@ -70,10 +74,12 @@ export class WelcomePage {
             })
     }
 
+    //function, redirect to reset password page
     resetPasswordClicked() {
         this.navCtrl.push(PasswordResetPage);
     }
 
+    //checking if an user session is available and logging in automatically
     ionViewWillLoad() {
         this.presentLoading();
         this.angularFireAuth.authState.subscribe(data => {
@@ -85,6 +91,7 @@ export class WelcomePage {
         })
     }
 
+    //function, notification window
     private presentToast(text) {
         let toast = this.toastCtrl.create({
             message: text,
@@ -94,6 +101,7 @@ export class WelcomePage {
         toast.present();
     }
 
+    //function, loading window
     presentLoading() {
         this.loading = this.loadingCtrl.create({
             content: 'Logging in...'
@@ -101,6 +109,7 @@ export class WelcomePage {
         this.loading.present();
     }
 
+    //function, setting the first logging parameter
     setFirstLogin() {
         this.angularFireDatabase.database.ref('users/' + this.angularFireAuth.auth.currentUser.uid).update({
             firstLogin: false
@@ -109,6 +118,7 @@ export class WelcomePage {
         })
     }
 
+    //function, show edit profile
     showEditProfile() {
         let confirm = this.alertCtrl.create({
             title: 'Hello there',

@@ -4,13 +4,6 @@ import {AlertController, IonicPage, NavController, NavParams} from "ionic-angula
 import {CreateUserPage} from "../create-user/create-user";
 import {AngularFireDatabase} from "angularfire2/database";
 
-/**
- * Generated class for the ScanQrPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
     selector: 'page-scan-qr',
@@ -26,7 +19,7 @@ export class ScanQrPage {
                 public alertCtrl: AlertController) {
     }
 
-
+    //function, scan sensor qr code
     scanCode() {
         this.barcodeScanner.scan().then(barcodeData => {
             console.log(barcodeData);
@@ -44,6 +37,7 @@ export class ScanQrPage {
         })
     }
 
+    //function, show confirmation dialog
     showConfirm() {
         let confirm = this.alertCtrl.create({
             title: 'Sensor Identified',
@@ -68,6 +62,7 @@ export class ScanQrPage {
         confirm.present();
     }
 
+    //function, show error dialog
     showError() {
         let alert = this.alertCtrl.create({
             title: 'Identification Failed',
