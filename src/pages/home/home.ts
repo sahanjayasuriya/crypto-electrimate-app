@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {AngularFireAuth} from 'angularfire2/auth';
-import {AngularFireDatabase, DatabaseSnapshot} from 'angularfire2/database';
-import {Chart} from 'chart.js';
-import {IonicPage, LoadingController, NavController, NavParams} from "ionic-angular";
-import {LastBillPage} from "../last-bill/last-bill";
-import {ScanQrPage} from "../scan-qr/scan-qr";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase, DatabaseSnapshot } from 'angularfire2/database';
+import { Chart } from 'chart.js';
+import { IonicPage, LoadingController, NavController, NavParams } from "ionic-angular";
+import { LastBillPage } from "../last-bill/last-bill";
+import { ScanQrPage } from "../scan-qr/scan-qr";
 
 @IonicPage()
 @Component({
@@ -15,6 +15,11 @@ export class HomePage implements OnInit {
 
     @ViewChild('doughnutCanvas') doughnutCanvas;
     doughnutChart: any;
+    @ViewChild('lineCanvas') lineCanvas;
+    lineChart: any;
+    showChart: boolean = false;
+    startDate: Date;
+    dueDate: Date;
     sensorsAvailable = true;
     module;
     bills = [];
@@ -243,7 +248,8 @@ export class HomePage implements OnInit {
 
         this.angularFireDatabase.database.ref('users/' + this.angularFireAuth.auth.currentUser.uid + '/sensorId').once('value')
             .then((sensor) => {
-                this.angularFireDatabase.database.ref('sensors/' + sensor.val() + '/bills').orderByChild('current').equalTo(true).limitToFirst(1).once('value')
+                this.angularFireDatabase.database.ref('sensors/' + sensor.val() + '/bills')
+                    .orderByChild('current').equalTo(true).limitToFirst(1).once('value')
                     .then((billSnapshot) => {
                         let bill = billSnapshot.val();
                         let key = Object.keys(bill);
@@ -251,6 +257,69 @@ export class HomePage implements OnInit {
                         if (refresher) {
                             refresher.complete()
                         }
+                        return sensor;
+                    })
+                    // Load processed data of last 30 days to display the usage chart
+                    .then((sensor) => {
+                        const billDate = new Date(this.bill.from);
+                        this.angularFireDatabase.database.ref('sensors/' + sensor.val() + '/processed/' + billDate.getFullYear() + '/' + (billDate.getMonth() + 1))
+                            .orderByKey().once('value')
+                            .then((data) => {
+                                var config = {
+                                    type: 'line',
+                                    data: {
+                                        labels: [],
+                                        datasets: [{
+                                            label: 'Usage in Watt Hours',
+                                            backgroundColor: '#ff6383',
+                                            borderColor: '#ff6383',
+                                            data: [],
+                                            fill: false,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Usage in This month'
+                                        },
+                                        tooltips: {
+                                            mode: 'index',
+                                            intersect: false,
+                                        },
+                                        hover: {
+                                            mode: 'nearest',
+                                            intersect: true
+                                        },
+                                        scales: {
+                                            xAxes: [{
+                                                display: true,
+                                                scaleLabel: {
+                                                    display: true,
+                                                    labelString: 'Date'
+                                                }
+                                            }],
+                                            yAxes: [{
+                                                display: true,
+                                                scaleLabel: {
+                                                    display: true,
+                                                    labelString: 'Usage (Wh)'
+                                                }
+                                            }]
+                                        }
+                                    }
+                                };
+                                var i = 0;
+                                data.forEach((daySnap) => {
+                                    console.log(daySnap.val());
+                                    config.data.labels.push(daySnap.key);
+                                    daySnap.forEach((val) => {
+                                        console.log(val.val());
+                                        config.data.datasets[0].data.push(val.val())
+                                    })
+                                })
+                                this.lineChart = new Chart(this.lineCanvas.nativeElement, config);
+                            })
                     })
             }).catch((err) => {
                 console.log(err);
